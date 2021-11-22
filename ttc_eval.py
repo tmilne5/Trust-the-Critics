@@ -5,6 +5,7 @@ Optional evaluation of FID and MMD (the latter not used in paper)
 
 import os, sys
 sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(),'TTC_utils'))
 import argparse
 import time
 import shutil

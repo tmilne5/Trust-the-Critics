@@ -37,6 +37,7 @@ The following files will be saved in this subdirectory
 
 import os, sys
 sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(),'TTC_utils'))
 import shutil
 import argparse
 import time

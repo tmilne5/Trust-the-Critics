@@ -5,6 +5,7 @@ Initially built from www.github.com/caogang/wgan-gp
 
 import os, sys
 sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(),'TTC_utils'))
 import argparse
 import time
 import log

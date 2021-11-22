@@ -5,6 +5,7 @@ Loads 128x128 crops of entire bsds500 test set, adds noise, restores, and comput
 
 import os, sys
 sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(),'TTC_utils'))
 import argparse
 import time
 import log
