@@ -21,7 +21,7 @@ from torch import optim
 
 import dataloader
 import networks
-#from get_training_time import write_training_time
+from get_training_time import write_training_time
 from generate_samples import generate_image
 from critic_trainer import critic_trainer
 
@@ -150,4 +150,4 @@ for iteration in range(args.num_crit):
             torch.save(critic_list[j].state_dict(), os.path.join(args.temp_dir,'model_dicts','critic{}.pth'.format(j)))
 
 print(steps)
-#write_training_time(args)
+write_training_time(args)

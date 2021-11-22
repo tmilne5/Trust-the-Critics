@@ -164,10 +164,6 @@ if args.model == 'dcgan':
     from dcgan import Discriminator
     from dcgan import Generator
     latent_dim = 128
-elif args.model == 'sndcgan':
-    from sndc_discriminator import Discriminator
-    from sndc_generator import Generator
-    latent_dim = 128
 elif args.model == 'infogan':
     from infogan import Discriminator
     from infogan import Generator
