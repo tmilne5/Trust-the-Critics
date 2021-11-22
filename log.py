@@ -1,13 +1,11 @@
-"""Code initially taken from github.com/caogang/wgan-gp"""
+"""
+Code initially taken from github.com/caogang/wgan-gp
+"""
 
 import numpy as np
-
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-
 import collections
-import time
 import pickle
 
 _since_beginning = collections.defaultdict(lambda: {})

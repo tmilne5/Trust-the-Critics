@@ -1,28 +1,22 @@
-#Code for training baseline wgan_gp on infogan
-#Initially built from www.github.com/caogang/wgan-gp
+"""
+Code for training baseline wgan_gp on infogan
+Initially built from www.github.com/caogang/wgan-gp
+"""
 
 import os, sys
 sys.path.append(os.getcwd())
-
 import argparse
 import time
 import log
 import json
 import random
-
 import numpy as np
-import pandas as pd
-
 import torch
-import torchvision
-from torch import nn
-from torch import autograd
 from torch import optim
 
 import dataloader
 from networks import infogan_generator as Generator
 from networks import infogan as Discriminator
-from generate_samples import generate_image
 from calc_gradient_penalty import calc_gradient_penalty
 from get_data import get_data
 

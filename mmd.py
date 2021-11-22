@@ -1,11 +1,10 @@
-#from https://github.com/EmoryMLIP/OT-Flow
-
-# mmd.py
-# Maximum Mean Discrepancy
-# Removed numpy option
-
+"""
+from https://github.com/EmoryMLIP/OT-Flow
+mmd.py
+Maximum Mean Discrepancy
+Removed numpy option
+"""
 import torch
-import numpy as np
 
 # from https://github.com/josipd/torch-two-sample/blob/master/torch_two_sample/statistics_diff.py
 def pdist(sample_1, sample_2, norm=2, eps=1e-5):

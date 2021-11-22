@@ -1,20 +1,19 @@
+"""
+A collection of data loaders used for training TTC and WGAN-GP
+"""
+
 import os
-import numpy as np
 import torch as th
 import torchvision 
 import torchvision.transforms as transforms
-import scipy
 from torchvision.datasets import CIFAR10, CIFAR100, FashionMNIST, MNIST, SVHN
-
 from networks import infogan_generator as Generator
-"""A collection of data loaders used for training TTC and WGAN-GP"""
-def fashion(args,train):
 
+
+def fashion(args,train):
     preprocess = transforms.Compose([transforms.Resize((32,32)), transforms.ToTensor(), transforms.Normalize((0.5),(0.5))])
 
-
     ds = FashionMNIST(args.data, download=True, train=train, transform=preprocess)
-
 
     dataloader = th.utils.data.DataLoader(ds,
                       batch_size = args.bs,
@@ -31,12 +30,9 @@ def fashion(args,train):
     return dataloader
 
 def mnist(args,train):
-
     preprocess = transforms.Compose([transforms.Resize((32,32)), transforms.ToTensor(),transforms.Normalize((0.5),(0.5))])
 
-
     ds = MNIST(args.data, download=True, train=train, transform=preprocess)
-
 
     dataloader = th.utils.data.DataLoader(ds,
                       batch_size = args.bs,

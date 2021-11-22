@@ -1,36 +1,24 @@
-#Code for evaluating the effectiveness of denoising using ttc
-#Loads 128x128 crops of entire bsds500 test set, adds noise, restores, and computes PSNR
+"""
+Code for evaluating the effectiveness of denoising using ttc
+Loads 128x128 crops of entire bsds500 test set, adds noise, restores, and computes PSNR
+"""
 
 import os, sys
 sys.path.append(os.getcwd())
-
 import argparse
 import time
 import log
-import shutil
 import random
-
 import numpy as np
-
 import torch
-import torchvision
-from torch import nn
-from torch import autograd
-from torch import optim
-from torchvision import utils
 import pandas as pd
 import pickle
-from tqdm import tqdm
-
 import matplotlib
-import matplotlib.pyplot as plt
 matplotlib.use('Agg')
-import numpy as np
 
 import dataloader
 import networks
 from generate_samples import generate_image
-from generate_samples import save_individuals
 from steptaker import steptaker
 
 

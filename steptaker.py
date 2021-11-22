@@ -1,6 +1,5 @@
 import torch
 from torch import autograd
-import sys
 
 
 def steptaker(data, critic, step, num_step = 1):

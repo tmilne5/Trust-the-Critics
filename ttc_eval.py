@@ -1,30 +1,21 @@
-"""takes a list of critics and step sizes, and produces a sequence of pictures using TTC
-Optional evaluation of FID and MMD (the latter not used in paper)"""
+"""
+Takes a list of critics and step sizes, and produces a sequence of pictures using TTC
+Optional evaluation of FID and MMD (the latter not used in paper)
+"""
 
 import os, sys
 sys.path.append(os.getcwd())
-
 import argparse
 import time
 import shutil
 import random
-
 import numpy as np
-
 import torch
-import torchvision
-from torch import nn
-from torch import autograd
-from torch import optim
-from torchvision import utils
 import pandas as pd
 import pickle
 from tqdm import tqdm
-
 import matplotlib
-import matplotlib.pyplot as plt
 matplotlib.use('Agg')
-import numpy as np
 
 import dataloader
 import networks

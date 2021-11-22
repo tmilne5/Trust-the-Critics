@@ -1,5 +1,4 @@
 import torch
-import torchvision
 from torchvision import utils
 import os
 import matplotlib

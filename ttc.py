@@ -1,28 +1,21 @@
-"""Cleaned up code for training Trust The Critics (TTC) scheme"""
+"""
+Cleaned up code for training Trust The Critics (TTC) scheme
+"""
 
 import os, sys
 sys.path.append(os.getcwd())
-
 import argparse
 import time
 import log
-import copy
 import json
 import random
-
 import numpy as np
-import pandas as pd
-import pickle
-
 import torch
-from torch import nn
-from torch import autograd
 from torch import optim
 
 import dataloader
 import networks
 from get_training_time import write_training_time
-from generate_samples import generate_image
 from critic_trainer import critic_trainer
 
 #################

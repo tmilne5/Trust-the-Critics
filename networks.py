@@ -6,7 +6,6 @@ import torch
 from torch import nn
 
 
-
 ##################
 # Simple convolutional block, used by several networks
 ##################
@@ -19,8 +18,7 @@ class ConvBlock(nn.Module):
     def forward(self, input):
         return self.main(input)
       
-    
-    
+      
 ##################
 # Pytorch version of "ConvNetClassifier" from Lunz et. al. Adversarial Regularizers in Inverse Problems
 ##################
@@ -51,8 +49,6 @@ class arConvNet(nn.Module):
         return output
 
 
-
-
 ################
 # SNDC discriminator, from "A Large Scale Study of Regularization and Normalization in GANs"
 ################
@@ -76,8 +72,7 @@ class sndcgan(nn.Module):
         output = self.main(input)
         output = output.view(-1, self.final_h*self.final_w*8*self.DIM)
         output = self.linear(output)
-        return output
-     
+        return output   
     
     
 ################
@@ -109,7 +104,6 @@ class bsndcgan(nn.Module):
         output = output.view(-1, self.final_h*self.final_w*8*self.DIM)
         output = self.linear(output)
         return output
-
 
 
 ###############
@@ -178,7 +172,6 @@ class dcgan_generator(nn.Module):#added bias = False to each module followed by 
         return output.view(-1, self.num_chan, 32, 32)
 
 
-
 ################
 # InfoGAN discriminator, from "Are GANs created equal?"
 ################
@@ -243,7 +236,6 @@ class infogan_generator(nn.Module):
         output = self.conv2(output)
         output = self.tanh(output)
         return output.view(-1, self.num_chan, self.h, self.w)
-
 
 
 ################
