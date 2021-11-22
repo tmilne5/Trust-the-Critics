@@ -1,7 +1,7 @@
 # Trust-the-Critics
 PyTorch implementation of the TTC algorithm. Currently in development.
 
-Who's who and what's waht
+Who's who and what's what
 
 WGAN MISALIGNMENTS
 recap of this experiment and explanation of how to run it
