@@ -1,0 +1,11 @@
+### Ignore job submissions on server
+job*
+
+### Ignore slurm files
+slurm*
+
+### Ignore results folder
+results/
+
+### Others
+__pycache__/
