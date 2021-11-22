@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 import scipy
 from torchvision.datasets import CIFAR10, CIFAR100, FashionMNIST, MNIST, SVHN
 
-from infogan import Generator
+from networks import infogan_generator as Generator
 """A collection of data loaders used for training TTC and WGAN-GP"""
 def fashion(args,train):
 

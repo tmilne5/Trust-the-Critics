@@ -20,8 +20,8 @@ from torch import autograd
 from torch import optim
 
 import dataloader
-from infogan import Generator
-from infogan import Discriminator
+from networks import infogan_generator as Generator
+from networks import infogan as Discriminator
 from generate_samples import generate_image
 from calc_gradient_penalty import calc_gradient_penalty
 from get_data import get_data

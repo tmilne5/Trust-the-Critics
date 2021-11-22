@@ -52,6 +52,7 @@ import training
 from evaluating import fid_eval
 import dataloader
 import compare_directions
+import networks
 
 
 starttime = time.time()
@@ -160,16 +161,10 @@ wpix = loader.wpix
 loader_gen = iter(loader)
 
 # Networks
-if args.model == 'dcgan':
-    from dcgan import Discriminator
-    from dcgan import Generator
-    latent_dim = 128
-elif args.model == 'infogan':
-    from infogan import Discriminator
-    from infogan import Generator
-    latent_dim = 64
-generator = Generator(args.DIM, num_chan, hpix, wpix)
-critic = Discriminator(args.DIM, num_chan, hpix, wpix)
+generator = getattr(networks, args.model + '_generator')(args.DIM, num_chan, hpix, wpix)
+critic = getattr(networks, args.model)(args.DIM, num_chan, hpix, wpix)
+latent_dim = generator.latent_dim
+
 if use_cuda:
     generator = generator.cuda()
     critic = critic.cuda()
