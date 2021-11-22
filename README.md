@@ -1,4 +1,4 @@
-# Trust-the-Critics
+# Trust-the-Critics (Code for Reproducibility)
 
 The main branch of this repository includes cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the experimental results in the paper. By running the code in this branch with the provided random seeds and packages as in the requirements file, you should get our experimental results exactly.
 
