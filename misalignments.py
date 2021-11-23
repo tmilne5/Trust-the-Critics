@@ -11,9 +11,9 @@ IMPORTANT INPUTS
     - seed (defaults to -1): Random seed that can be used for reproducibility. 
     - data (required): Directory where the dataset is located.
     - fid_data (required): Directory where the test data is evaluated (for FID evaluation).
-    - temp_dir (defaults to None): Directory used during computations, e.g. a temporary directory on a compute node.  If unspecified
+    - temp_dir (defaults to current working directory): Directory used during computations, e.g. a temporary directory on a compute node.  If unspecified
                                    this defaults to the current working directory.
-    - results_path (required): Directory where the results of the experiment will be saved.
+    - results_path (defaults to current working directory): Directory where the results of the experiment will be saved.
     - checkpoints (required): A string containing integers specifying the iterations at which misalignment cosines and FID will be 
                               computed. These integers should be separated by underscores. This input determines the runtime, since 
                               training will continue for as many iterations as specified by the largest integers. Furthermore, FID 
@@ -64,7 +64,7 @@ parser.add_argument('--target', type=str, required=True, choices=['mnist', 'fash
 parser.add_argument('--data', type=str, required=True, help='Directory where data is located')
 parser.add_argument('--fid_data', type=str, required=True, help='Directory where test data for FID evaluation is located')
 parser.add_argument('--temp_dir', type=str, default=None, help='Temporary directory for computations')
-parser.add_argument('--results_path', type=str, required=True, help='Path where results will be saved')
+parser.add_argument('--results_path', type=str, default=None, help='Path where results will be saved')
 parser.add_argument('--model', type=str, default='infogan', choices=['dcgan', 'infogan'])
 parser.add_argument('--checkpoints', type=str, required=True, help='A string of the form i1_i2_i3_... where the ijs are integers specifying iterations')
 parser.add_argument('--critters', type=int, default=5, help='number of critic iters per gen update')
@@ -106,7 +106,10 @@ else:
     temp_dir = args.temp_dir
 
 # Everything will be saved in a sub-folder of:
-results_path = args.results_path
+if args.results_path is None:
+    results_path = os.getcwd()
+else:
+    results_path = args.results_path
 
 # Define experiment's name. If there's already an experiment with this name in results_path, add timestamp to the name.
 if args.seed==-1:
