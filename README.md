@@ -9,7 +9,7 @@ Create a Python virtual environment with Python 3.8 installed. Then, install the
 
 
 **WGAN misalignments**  
-recap of this experiment and explanation of how to run it
+The misalignment experiments are described in Section 3 and Appendix B.1 of the paper. They are run using the misalignments.py script. 
 
 
 
