@@ -35,13 +35,13 @@ This repository contains two branches: 'main' and 'reproducible'. You are currec
 
 ### Assets 
 Portions of this code, as well as the datasets used to produce our experimental results, make use of existing assets. We provide here a list of all assets used, along with the licenses under which they are distributed, if specified by the originator:
-- This code was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP (:copyright: 2017 Ishaan Gulrajani). Distributed under the MIT licence
-- **mmd.py**: from https://github.com/EmoryMLIP/OT-Flow, (:copyright: 2020 EmoryMLIP). Distributed under the MIT licence. Unused in the paper, but provides a separate interesting metric for measuring performance.
+- This code was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
+- **mmd.py**: from https://github.com/EmoryMLIP/OT-Flow, ((c) 2020 EmoryMLIP). Distributed under the MIT licence. Unused in the paper, but provides a separate interesting metric for measuring performance.
 - **pytorch_fid**: from https://github.com/mseitzer/pytorch-fid. Distributed under the Apache License 2.0.
 - **MNIST dataset**: from http://yann.lecun.com/exdb/mnist/. Distributed under the Creative Commons Attribution-Share Alike 3.0 license.
-- **Fashion MNIST datset**: from  https://github.com/zalandoresearch/fashion-mnist (:copyright: 2017 Zalando SE, https://tech.zalando.com). Distributed under the MIT licence.
+- **Fashion MNIST datset**: from  https://github.com/zalandoresearch/fashion-mnist ((c) 2017 Zalando SE, https://tech.zalando.com). Distributed under the MIT licence.
 - **CIFAR10 dataset**: from https://www.cs.toronto.edu/~kriz/cifar.html.
-- **Image translation datasets**: from https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix (:copyright: 2017, Jun-Yan Zhu and Taesung Park). Distributed under the BSD licence.
+- **Image translation datasets**: from https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix ((c) 2017, Jun-Yan Zhu and Taesung Park). Distributed under the BSD licence.
 - **BSDS500 dataset**: from https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html.
 
 
