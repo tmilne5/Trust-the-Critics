@@ -245,6 +245,8 @@ for i in range(len(checkpoints)):
     series['FID'] = fid
     print("FID obtained: {}".format(fid))
     
+    df = df.append([series])
+    
     # Write results in txt file
     exp_file = open(os.path.join(save_path, '{}.txt'.format(exp_name)), 'a')
     exp_file.write("Generator update {}\n".format(current_iter))
