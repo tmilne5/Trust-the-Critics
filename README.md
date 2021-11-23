@@ -13,7 +13,7 @@ This repository is a PyTorch implementation of the TTC algorithm and the WGAN mi
 The various experiments we run with TTC are described in Section 5 and Addendix B of the paper. Illustrating the flexibility of the TTC algorithm, the image generation, denoising and translation experiments can all be run using the ttc.py script; the only necessary changes are the source and target datasets. Running TTC with a given source and a given target will train and save several critic neural networks, that can subsequently be used to push the source distribution towards the target distribution by applying the 'steptaker' function found in TTC_utils/steptaker.py once for each critic.  
 
 Necessary arguments for ttc.py are:
-* 'source' : The name of the distribution or dataset to push towards the target (options are listed in ttc.py).
+* 'source' : The name of the distribution or dataset that is to be pushed towards the target (options are listed in ttc.py).
 * 'target' : The name of a dataset (options are listed in ttc.py).
 * 'data' : The path of a directory where the necessary data is located. This includes the target dataset, in a format that can be accessed by a dataloader object obtained from the corresponding function in dataloader.py. Such a dataloader always belongs to the torch.utils.data.DataLoader class (e.g. if target=='mnist', then the corresponding dataloader will be an instance of torchvision.datasets.MNIST, and the MNIST dataset should be placed in 'data'accordingly). If the source is a dataset, it needs to be placed in 'data' as well.
 * 'temp_dir' : The path of a directory where the trained critics will be saved, along with a few other files. Despite the name, this folder isn't necessarily temporary.
