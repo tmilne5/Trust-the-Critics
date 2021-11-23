@@ -72,8 +72,6 @@ iterator = iter(loader)
 
 netG = Generator(args.dim, num_chan, hpix, wpix)
 netD = Discriminator(args.dim, num_chan, hpix, wpix)
-print(netG)
-print(netD)
 
 os.makedirs(os.path.join(args.temp_dir,'model_dicts'), exist_ok = True)
 torch.save(netG.state_dict(), os.path.join(args.temp_dir,'model_dicts','generator0.pth'))#save untrained generator for getting baseline FID/MMD
@@ -81,6 +79,7 @@ torch.save(netG.state_dict(), os.path.join(args.temp_dir,'model_dicts','generato
 print('Arguments:')
 for p in vars(args).items():
     print('  ',p[0]+': ',p[1])
+print('InfoGAN generator and critic')
 print('\n')
 
 use_cuda = torch.cuda.is_available()

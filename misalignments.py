@@ -231,7 +231,7 @@ for i in range(len(checkpoints)):
     sgd_cosines, sgd_cosines_stats, adam_cosines, adam_cosines_stats = compare_directions.cosines_histogram(crit_grads, sgd_updates, adam_updates, current_iter, hist_save_path, args)
     
     # Record results
-    series['SGD cosines'], series['SGD_cosines_stats'] = sgd_cosines, sgd_cosines_stats
+    series['SGD_cosines'], series['SGD_cosines_stats'] = sgd_cosines, sgd_cosines_stats
     series['Adam_cosines'], series['Adam_cosines_stats'] = adam_cosines, adam_cosines_stats
     print('SGD alignment cosines stats (mean, std) = {} \nAdam alignment cosines stats (mean, std) = {}'.format(sgd_cosines_stats, adam_cosines_stats))
     
