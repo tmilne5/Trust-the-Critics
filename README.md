@@ -1,29 +1,34 @@
 # Trust-the-Critics
-PyTorch implementation of the TTC algorithm. Currently in development.
+PyTorch implementation of the TTC algorithm.
+
+
+### How to run this code
+Create a Python virtual environment with Python 3.8 installed. Then, install the requirement 
+
 
 Who's who and what's what
 
-WGAN MISALIGNMENTS
+### WGAN misalignments
 recap of this experiment and explanation of how to run it
 
 
 
 
-TTC IMAGE GENERATION 
+### TTC image generation 
 recap of these experiment and explanation of how to run it
 
 
 
 
 
-TTC MONET TRANSLATION 
+### TTC Monet translation
 recap of this experiment and explanation of how to run it
 
 
 
 
 
-TTC DENOISING
+### TTC denoising
 recap of this experiment and explanation of how to run it
 
 
