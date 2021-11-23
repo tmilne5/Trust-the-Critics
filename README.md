@@ -3,7 +3,9 @@ PyTorch implementation of the TTC algorithm.
 
 
 ### How to run this code
-Create a Python virtual environment with Python 3.8 installed. Then, install the necessary Python packages listed in the requirements.txt file (this can be done through pip install -r /path/to/requirements.txt). 
+* Create a Python virtual environment with Python 3.8 installed.
+* Install the necessary Python packages listed in the requirements.txt file (this can be done through pip install -r /path/to/requirements.txt).
+
 
 
 
