@@ -34,6 +34,7 @@ recap of this experiment and explanation of how to run it
 
 ### ASSETS  
 Should we cite assets here?
+Should we mention things were run on compute canada?
 
 
 
