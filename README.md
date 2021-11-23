@@ -30,7 +30,7 @@ recap of this experiment and explanation of how to run it
   
 
 ### Reproducibility
-This repository contains two branches: 'main' and 'reproducible'. You are currectly viewing the 'main' branch, which contains a clean .
+This repository contains two branches: 'main' and 'reproducible'. You are currectly viewing the 'main' branch, which contains a clean version of the code, which is meant to be easy to read and interpret, and which runs more efficiently than the version on the 'reproducible' branch. 
 
 
 ### Assets 
