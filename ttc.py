@@ -11,7 +11,7 @@ IMPORTANT INPUTS
     - num_crit: The number of critic networks used to push the source to the target.
     - theta: The step size parameter described in the paper
     
-Note: the default source and target correspond to 
+Note: the default source and target correspond to generating MNIST-like samples.
 
 OUTPUTS
 Running this script will save the following files in temp_dir:
