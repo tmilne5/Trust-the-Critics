@@ -14,7 +14,7 @@ The various experiments we run with TTC are described in Section 5 and Addendix 
 
 Necessary arguments for ttc.py are:
 * 'source' : The name of the distribution or dataset that is to be pushed towards the target (options are listed in ttc.py).
-* 'target' : The name of a dataset (options are listed in ttc.py).
+* 'target' : The name of the target dataset (options are listed in ttc.py).
 * 'data' : The path of a directory where the necessary data is located. This includes the target dataset, in a format that can be accessed by a dataloader object obtained from the corresponding function in dataloader.py. Such a dataloader always belongs to the torch.utils.data.DataLoader class (e.g. if target=='mnist', then the corresponding dataloader will be an instance of torchvision.datasets.MNIST, and the MNIST dataset should be placed in 'data'accordingly). If the source is a dataset, it needs to be placed in 'data' as well.
 * 'temp_dir' : The path of a directory where the trained critics will be saved, along with a few other files. Despite the name, this folder isn't necessarily temporary.
 
