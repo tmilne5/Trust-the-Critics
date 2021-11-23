@@ -29,10 +29,11 @@ recap of this experiment and explanation of how to run it
   
   
 
+### Reproducibility
+...
 
 
-
-### ASSETS  
+### Assets 
 Should we cite assets here?
 Should we mention things were run on compute canada?
 
