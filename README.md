@@ -10,7 +10,7 @@ This repository is a PyTorch implementation of the TTC algorithm and the WGAN mi
 
 
 ### TTC algorithm
-The various experiments we run with TTC are described in Section 5 and Addendix B of the paper. Illustrating the flexibility of the TTC algorithm, the image generation, denoising and translation experiments can all be run using the ttc.py script, the only necessary changes being the source and target datasets, which are specifed through the 'source' and 'data' arguments, respectively. Running TTC with a given source and a given target will train and save several critic neural networks, that can subsequently be used to push the source distribution towards the target distribution by applying the 'steptaker' function found in TTC_utils/steptaker.py once for each critic. 
+The various experiments we run with TTC are described in Section 5 and Addendix B of the paper. Illustrating the flexibility of the TTC algorithm, the image generation, denoising and translation experiments can all be run using the ttc.py script, the only necessary changes being the source and target datasets (which are specifed through the 'source' and 'data' arguments, respectively). Running TTC with a given source and a given target will train and save several critic neural networks, that can subsequently be used to push the source distribution towards the target distribution by applying the 'steptaker' function found in TTC_utils/steptaker.py once for each critic. 
 
 
 **TTC image generation**   
