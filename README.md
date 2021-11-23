@@ -6,7 +6,8 @@ PyTorch implementation of the TTC algorithm.
 Create a Python virtual environment with Python 3.8 installed. Then, install the requirement 
 
 
-Who's who and what's what
+
+
 
 ### WGAN misalignments
 recap of this experiment and explanation of how to run it
