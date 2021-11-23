@@ -10,7 +10,10 @@ This repository is a PyTorch implementation of the TTC algorithm and the WGAN mi
 
 
 ### TTC algorithm
-The various experiments we run with TTC are described in Section 5 and Addendix B of the paper. Illustrating the flexibility of the TTC algorithm, the image generation, denoising and translation experiments can all be run using the ttc.py script, the only necessary changes being the source and target datasets (which are specifed through the 'source' and 'data' arguments, respectively). Running TTC with a given source and a given target will train and save several critic neural networks, that can subsequently be used to push the source distribution towards the target distribution by applying the 'steptaker' function found in TTC_utils/steptaker.py once for each critic. 
+The various experiments we run with TTC are described in Section 5 and Addendix B of the paper. Illustrating the flexibility of the TTC algorithm, the image generation, denoising and translation experiments can all be run using the ttc.py script, the only necessary changes being the source and target datasets (which are specifed through the 'source' and 'target' arguments, respectively). Running TTC with a given source and a given target will train and save several critic neural networks, that can subsequently be used to push the source distribution towards the target distribution by applying the 'steptaker' function found in TTC_utils/steptaker.py once for each critic.  
+
+Important arguments for ttc.py are:
+* 'source' : 
 
 
 **TTC image generation**   
@@ -31,7 +34,7 @@ recap of this experiment and explanation of how to run it
 ### WGAN misalignment 
 The WGAN misalignment experiments are described in Section 3 and Appendix B.1 of the paper, and are run using misalignments.py. This script trains a WGAN while, at some iterations, measuring how misaligned the movement of generated samples caused by updating the generator is from the critic's gradient. The generator's FID is also measured at the same iterations.
 
-The required arguments are:
+The required arguments for misalignments.py are:
 * 'target' : The dataset used to train the WGAN - can be either 'mnist' or 'fashion' (for Fashion-MNIST).
 * 'data' : The path of a folder where the MNIST (or Fashion-MNIST) dataset is located, in a format that can be accessed by an instance of the torchvision.datasets.MNIST class (resp torchvision.datasets.FashionMNIST). 
 * 'fid_data' :  The path of a folder containing the test data from the MNIST dataset saved as individual jpg files. For instance, this folder could contain files of the form '00001.jpg', '00002.jpg', etc. (although extensions other than .jpg can be used).
