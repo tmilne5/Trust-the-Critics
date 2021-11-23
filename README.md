@@ -37,7 +37,7 @@ This repository contains two branches: 'main' and 'reproducible'. You are currec
 
 ### Assets 
 Portions of this code, as well as the datasets used to produce our experimental results, make use of existing assets. We provide here a list of all assets used, along with the licenses under which they are distributed, if specified by the originator:
-- This code was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
+- The code used for training a wgan as a baseline was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
 - **mmd.py**: from https://github.com/EmoryMLIP/OT-Flow, ((c) 2020 EmoryMLIP). Distributed under the MIT licence. Unused in the paper, but provides a separate interesting metric for measuring performance.
 - **pytorch_fid**: from https://github.com/mseitzer/pytorch-fid. Distributed under the Apache License 2.0.
 - **MNIST dataset**: from http://yann.lecun.com/exdb/mnist/. Distributed under the Creative Commons Attribution-Share Alike 3.0 license.
