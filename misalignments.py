@@ -25,7 +25,7 @@ IMPORTANT INPUTS
 
 OUTPUTS
 Running this script will create a subdirectory of results_path with a name describing the target dataset and the WGAN model used.
-The following files will be saved in this subdirectory
+The following files will be saved in this subdirectory:
     - A .pkl file with a pandas DataFrame containing the results obtained at each checkpoint. The DataFrame has one row named 
       after each checkpoint, and five columns. The first columns contains all computed cosine values for SGD. The second contains 
       the statistics of the cosine values for SGD in the form (mean, std). The next two columns are similar, but for Adam. The 
@@ -33,6 +33,7 @@ The following files will be saved in this subdirectory
     - A .zip archive containing histograms of the cosine values computed at each checkpoint.
     - A .txt file containing the settings of the experiments and summarizing the results obtained at each checkpoint by giving
       the mean and standard deviation of cosine values for SGD and Adam, as well as the FID.
+Running this file will also save the histograms in temp_dir.
 """
 
 import os, sys

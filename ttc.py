@@ -1,5 +1,23 @@
 """
-Cleaned up code for training Trust The Critics (TTC) scheme
+Cleaned up code for training Trust The Critics (TTC) scheme. Will train a list of critic networks that can subsequently be used to push the source 
+dataset to the target dataset. 
+
+IMPORTANT INPUTS
+    - source (defaults to noise): A dataset which the gradients of the critics will push towards the target dataset.
+    - target (defaults to mnist): Another dataset.
+    - data (required): A directory where both datasets are located.
+    - temp_dir (required): A directory where the trained critics will be saved.
+    - model: The choice of architectures for the critics.
+    - num_crit: The number of critic networks used to push the source to the target.
+    - theta: The step size parameter described in the paper
+    
+Note: the default source and target correspond to 
+
+OUTPUTS
+Running this script will save the following files in temp_dir:
+    - The trained critic networks, saved under temp_dir/model_dicts/critic0.pth, temp_dir/model_dicts/critic1, etc.
+    - A .pkl log file containing, among other things, the step sizes for each critic (as in eq. (14) of the paper). Saved under temp_dir/log.pkl 
+    - A .txt file containing the configuration of the experiment, saved under temp_dir/train_config.txt.
 """
 
 import os, sys
@@ -23,11 +41,11 @@ from critic_trainer import critic_trainer
 #Get command line args
 #################
 parser = argparse.ArgumentParser('Training code for TTC')
-parser.add_argument('--target', type=str, default='mnist', choices=['cifar10','mnist','fashion', 'celeba', 'bsds500', 'monet', 'celebaHQ', 'all_zero'])
 parser.add_argument('--source', type=str, default='noise', choices=['noise', 'untrained_gen', 'noisybsds500', 'photo', 'unit_sphere'])
-parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'norm_taker'])
-parser.add_argument('--temp_dir', type=str, required=True, help = 'temporary directory for saving')
+parser.add_argument('--target', type=str, default='mnist', choices=['cifar10','mnist','fashion', 'celeba', 'bsds500', 'monet', 'celebaHQ', 'all_zero'])
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
+parser.add_argument('--temp_dir', type=str, required=True, help = 'temporary directory for saving')
+parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'norm_taker'])
 parser.add_argument('--dim', type=int, default=64, help = 'int determining network dimensions')
 parser.add_argument('--seed', type=int, default=-1, help = 'Set random seed for reproducibility')
 parser.add_argument('--lamb', type=float, default=1000., help = 'parameter multiplying gradient penalty')
