@@ -8,27 +8,27 @@ Create a Python virtual environment with Python 3.8 installed. Then, install the
 
 
 
-### WGAN misalignments
+**WGAN misalignments**
 recap of this experiment and explanation of how to run it
 
 
 
 
-### TTC image generation 
+**TTC image generation** 
 recap of these experiment and explanation of how to run it
 
 
 
 
 
-### TTC Monet translation
+**TTC Monet translation**
 recap of this experiment and explanation of how to run it
 
 
 
 
 
-### TTC denoising
+**TTC denoising**
 recap of this experiment and explanation of how to run it
 
 
