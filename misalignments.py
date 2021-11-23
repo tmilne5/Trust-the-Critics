@@ -27,9 +27,9 @@ OUTPUTS
 Running this script will create a subdirectory of results_path with a name describing the target dataset and the WGAN model used.
 The following files will be saved in this subdirectory
     - A .pkl file with a pandas DataFrame containing the results obtained at each checkpoint. The DataFrame has one row named 
-      after each checkpoint, and five columns. The first two colums specify the means and standard deviations of the cosine values
-      computed for SGD and Adam, respectively. The third and fourth column contain numpy arrays of shape [num_samples] with the 
-      cosine values compted for SGD and Adam, respectively. The last column specifies the FIDs of the generator. 
+      after each checkpoint, and five columns. The first columns contains all computed cosine values for SGD. The second contains 
+      the statistics of the cosine values for SGD in the form (mean, std). The next two columns are similar, but for Adam. The 
+      last column contains the FIDs.
     - A .zip archive containing histograms of the cosine values computed at each checkpoint.
     - A .txt file containing the settings of the experiments and summarizing the results obtained at each checkpoint by giving
       the mean and standard deviation of cosine values for SGD and Adam, as well as the FID.
@@ -196,7 +196,7 @@ if args.start_critters > 0:
                                       skip_last=True)
 
 current_iter = 0
-df = pd.DataFrame(columns = ['FID', 'gen_NDPs', 'opt_NDPs'])
+df = pd.DataFrame(columns = ['SGD_cosines', 'SGD_cosines_stats', 'Adam_cosines', 'Adam_cosines_stats', 'FID'])
 for i in range(len(checkpoints)):
     num_iters = checkpoints[i]-current_iter 
     
@@ -228,11 +228,12 @@ for i in range(len(checkpoints)):
     
     # Make histograms and get statistics
     hist_save_path = os.path.join(hist_save_dir, 'cosines_at_iter_{}'.format(current_iter))
-    sgd_updates_stats, sgd_cosines, adam_updates_stats, adam_cosines = compare_directions.cosines_histogram(crit_grads, sgd_updates, adam_updates, current_iter, hist_save_path, args)
+    sgd_cosines, sgd_cosines_stats, adam_cosines, adam_cosines_stats = compare_directions.cosines_histogram(crit_grads, sgd_updates, adam_updates, current_iter, hist_save_path, args)
     
     # Record results
-    series['SGD updates stats'], series['Adam updates stats'] = sgd_updates_stats, adam_updates_stats
-    series['SGD cosines'], series['Adam cosines'] = sgd_cosines, adam_cosines
+    series['SGD cosines'], series['SGD_cosines_stats'] = sgd_cosines, sgd_cosines_stats
+    series['Adam_cosines'], series['Adam_cosines_stats'] = adam_cosines, adam_cosines_stats
+    print('SGD alignment cosines stats (mean, std) = {} \nAdam alignment cosines stats (mean, std) = {}'.format(sgd_cosines_stats, adam_cosines_stats))
     
     # Evaluate FID
     print("Evaluating FID")
@@ -247,7 +248,7 @@ for i in range(len(checkpoints)):
     # Write results in txt file
     exp_file = open(os.path.join(save_path, '{}.txt'.format(exp_name)), 'a')
     exp_file.write("Generator update {}\n".format(current_iter))
-    exp_file.write("SGD alignment cosines stats (mean, std) = {} \nAdam alignment cosines stats (mean, std) = {}\nFID after update = {}\n\n".format(fid, sgd_updates_stats, adam_updates_stats))
+    exp_file.write("SGD alignment cosines stats (mean, std) = {} \nAdam alignment cosines stats (mean, std) = {}\nFID after update = {}\n\n".format(sgd_cosines_stats, adam_cosines_stats, fid))
     exp_file.close()
     
     

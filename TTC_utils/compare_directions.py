@@ -23,10 +23,10 @@ def cosines_histogram(crit_vecs, sgd_vecs, adam_vecs, iteration, hist_save_path,
         - hist_save_path: Path where the histogram will be saved.
         - args: Arguments to the main program (i.e. misalignments.py). Used in the histogram.
     OUTPUTS
-        - Statistics of SGD cosine values (mean, std).
         - SGD cosine values in a one dimensional numpy array.
-        - Statistics of Adam cosine values (mean, std).
+        - Statistics of SGD cosine values (mean, std).
         - Adam cosine values in a one dimensional numpy array.
+        - Statistics of Adam cosine values (mean, std).
     """
     # Normalize all vectors
     crit_vecs = normalize(crit_vecs)
@@ -55,7 +55,7 @@ def cosines_histogram(crit_vecs, sgd_vecs, adam_vecs, iteration, hist_save_path,
     plt.savefig(hist_save_path)
     plt.close()
     
-    return (sgd_ave, sgd_std), sgd_cosines, (adam_ave, adam_std), adam_cosines
+    return sgd_cosines, (sgd_ave, sgd_std), adam_cosines, (adam_ave, adam_std)
 
 
 
