@@ -9,7 +9,7 @@ Create a Python virtual environment with Python 3.8 installed. Then, install the
 
 
 **WGAN misalignments**  
-The misalignment experiments are described in Section 3 and Appendix B.1 of the paper. They are run using the misalignments.py script. 
+The WGAN misalignment experiments are described in Section 3 and Appendix B.1 of the paper, and are run using the misalignments.py script. The arguments that need to be specified when running this script are listed in a commented section at the top of the script. The folder specified by the 'temp_dir' argument needs to contain 
 
 
 
