@@ -5,7 +5,7 @@ dataset to the target dataset.
 IMPORTANT INPUTS
     - source (defaults to noise): The name of the distribution or dataset to push towards the target.
     - target (defaults to mnist): The name of a dataset.
-    - data (required): A directory where both datasets are located.
+    - data (required): A directory where the necessary data is located.
     - temp_dir (required): A directory where the trained critics will be saved.
     - model: The choice of architectures for the critics.
     - num_crit: The number of critic networks used to push the source to the target.
