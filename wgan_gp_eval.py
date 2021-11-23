@@ -1,4 +1,6 @@
-#Computes MMD and FID for a list of generators trained with wgan-gp
+"""
+Computes MMD and FID for a list of generators trained with wgan-gp
+"""
 
 import os, sys
 sys.path.append(os.getcwd())
@@ -17,6 +19,7 @@ matplotlib.use('Agg')
 import dataloader
 from generate_samples import generate_image
 from generate_samples import save_individuals
+import networks
 from mmd import mmd
 from pytorch_fid import fid_score
 from pytorch_fid import inception
@@ -60,19 +63,11 @@ num_chan = target_loader.in_channels
 hpix = target_loader.hpix
 wpix = target_loader.wpix
 
-
 gen_list = [None]*num_gen
-
-if args.model == 'dcgan':
-    from dcgan import Generator
-elif args.model == 'infogan':
-    from infogan import Generator
-
 for i in range(num_gen):
-    gen_list[i] = Generator(args.dim, num_chan, hpix, wpix)
-    gen_list[i].load_state_dict(torch.load(os.path.join(temp_dir,'model_dicts','generator{}.pth'.format(i))))#load pre-trained generators
+    gen_list[i] = getattr(networks, args.model + '_generator')(args.dim, num_chan, hpix, wpix)
+    gen_list[i].load_state_dict(torch.load(os.path.join(temp_dir,'model_dicts','generator{}.pth'.format(i)))) #load pre-trained generators
         
-
 print('Arguments:')
 for p in vars(args).items():
     print('  ',p[0]+': ',p[1])
