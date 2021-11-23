@@ -34,9 +34,11 @@ The WGAN misalignment experiments are described in Section 3 and Appendix B.1 of
 
 The required arguments are:
 * 'target' : The dataset used to train the WGAN - can be either 'mnist' or 'fashion' (for Fashion-MNIST).
-* 'data' : Directory where the MNIST (or Fashion-MNIST) dataset is located, in a format that can be accessed by an instance of the torchvision.datasets.MNIST class (resp torchvision.datasets.FashionMNIST). 
+* 'data' : Folder where the MNIST (or Fashion-MNIST) dataset is located, in a format that can be accessed by an instance of the torchvision.datasets.MNIST class (resp torchvision.datasets.FashionMNIST). 
+* 'fid_data' : Folder containing the test data from the MNIST dataset saved as individual jpg files. For instance, this folder could contain files of the form '00001.jpg', '00002.jpg', etc. (although extensions other than .jpg can be used).
+* 'checkpoints' : A string of integers separated by underscores. The integers specify the iterations at which misalignments and FID are computed, and training will continue until the largest iteration is reached.
 
-The arguments that need to be specified when running this script are listed in a commented section at the top of the script. The folder specified by the 'temp_dir' argument needs to contain a copy of the MNIST dataset in a format that can be accessed by an instance of the torchvision.datasets.MNIST class. For FID evaluation, the 'temp_dir' folder should also include a subfolder named 'temp_dir/mnisttest' containing the test data from the MNIST dataset saved as individual jpg files 'temp_dir/mnisttest/00001.jpg', 'temp_dir/mnisttest/00002.jpg', etc.  The misalignment results reported in the paper (Tables 1 and 5, and Figure 3), correspond roughly to setting the 'checkpoints' argument equal to '10_25000_40000', with '10' corresponding the early stage in training, '25000' to the mid stage, and '40000' to the late stage. 
+The misalignment results reported in the paper (Tables 1 and 5, and Figure 3), correspond roughly to setting the 'checkpoints' argument equal to '10_25000_40000', with '10' corresponding the early stage in training, '25000' to the mid stage, and '40000' to the late stage. 
 
 
 
