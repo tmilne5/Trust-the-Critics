@@ -1,17 +1,20 @@
 # Trust-the-Critics
-PyTorch implementation of the TTC algorithm.
+This repository is a PyTorch implementation of the TTC algorithm and the WGAN misalignment experiments presented in *Trust the Critics: Generatorless and Multipurpose WGANs with Initial Convergence Guarantees*.
 
 
-### How to run this code
+## How to run this code ##
 * Create a Python virtual environment with Python 3.8 installed.
 * Install the necessary Python packages listed in the requirements.txt file (this can be done through pip install -r /path/to/requirements.txt).
 
 
 
+### WGAN misalignment 
+The WGAN misalignment experiments are described in Section 3 and Appendix B.1 of the paper, and are run using misalignments.py. This script trains a WGAN while, at some iterations, measuring how misaligned the movement of generated samples caused by updating the generator is from the critic's gradient. The generator's FID is also measured at the same iterations.
 
+The required arguments are:
+* ...
 
-**WGAN misalignment**  
-The WGAN misalignment experiments are described in Section 3 and Appendix B.1 of the paper, and are run using the misalignments.py script. The arguments that need to be specified when running this script are listed in a commented section at the top of the script. The folder specified by the 'temp_dir' argument needs to contain a copy of the MNIST dataset in a format that can be accessed by an instance of the torchvision.datasets.MNIST class. For FID evaluation, the 'temp_dir' folder should also include a subfolder named 'temp_dir/mnisttest' containing the test data from the MNIST dataset saved as individual jpg files 'temp_dir/mnisttest/00001.jpg', 'temp_dir/mnisttest/00002.jpg', etc.  The misalignment results reported in the paper (Tables 1 and 5, and Figure 3), correspond roughly to setting the 'checkpoints' argument equal to '10_25000_40000', with '10' corresponding the early stage in training, '25000' to the mid stage, and '40000' to the late stage. 
+The arguments that need to be specified when running this script are listed in a commented section at the top of the script. The folder specified by the 'temp_dir' argument needs to contain a copy of the MNIST dataset in a format that can be accessed by an instance of the torchvision.datasets.MNIST class. For FID evaluation, the 'temp_dir' folder should also include a subfolder named 'temp_dir/mnisttest' containing the test data from the MNIST dataset saved as individual jpg files 'temp_dir/mnisttest/00001.jpg', 'temp_dir/mnisttest/00002.jpg', etc.  The misalignment results reported in the paper (Tables 1 and 5, and Figure 3), correspond roughly to setting the 'checkpoints' argument equal to '10_25000_40000', with '10' corresponding the early stage in training, '25000' to the mid stage, and '40000' to the late stage. 
 
 
 
@@ -37,7 +40,7 @@ This repository contains two branches: 'main' and 'reproducible'. You are currec
 
 ### Assets 
 Portions of this code, as well as the datasets used to produce our experimental results, make use of existing assets. We provide here a list of all assets used, along with the licenses under which they are distributed, if specified by the originator:
-- This code was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
+- The code used for training a wgan as a baseline was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
 - **mmd.py**: from https://github.com/EmoryMLIP/OT-Flow, ((c) 2020 EmoryMLIP). Distributed under the MIT licence. Unused in the paper, but provides a separate interesting metric for measuring performance.
 - **pytorch_fid**: from https://github.com/mseitzer/pytorch-fid. Distributed under the Apache License 2.0.
 - **MNIST dataset**: from http://yann.lecun.com/exdb/mnist/. Distributed under the Creative Commons Attribution-Share Alike 3.0 license.
