@@ -1,6 +1,6 @@
 # Trust-the-Critics (Code for Reproducibility)
 
-The main branch of this repository includes cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the experimental results in the paper. By running the code in this branch with the provided random seeds and packages as in the requirements file, you should get our experimental results exactly.
+The main branch of this repository includes a cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the experimental results in the paper. By running the code in this branch with the provided random seeds and packages as in the requirements file, you should get our experimental results exactly.
 
 A brief description of the code is included here. See the main branch for specifics on how datasets should be saved.
  
@@ -17,12 +17,12 @@ A brief description of the code is included here. See the main branch for specif
 The experiments in Section 5.1 of the paper use the random seeds 0, 1, 2, 3, 4 for the distinct training runs. The experiments in Section 5.2 (image translation) do not use a reproducible seed (i.e. seed = -1 in the code); we do not see this as a major obstacle to reproducibility given the subjective nature of the results. The experiments in Section 5.3 use a single random seed of 0 for all noise levels.  
 
 ### Computing Architecture
-This code was run on the Graham cluster of Compute Canada (https://www.computecanada.ca/). The code in this branch was run on a single NVIDIA V100 Volta GPU. Approximate training times are as follows:
+This code was run on the Graham cluster of Compute Canada (https://www.computecanada.ca/), using a single NVIDIA V100 Volta GPU. Approximate training times are as follows:
 
-- **MNIST/Fashion MNIST generation training runs**: 1.2 hours (TTC), 0.7 hours (WGAN-GP)
-- **CIFAR10 generation training runs**: 3.2 hours (TTC), 1.5 hours (WGAN-GP)
-- **Image translation training runs**: 18.8 hours
-- **Image denoising training runs**: 8.6 hours
+- **MNIST/Fashion MNIST generation training run**: 1.2 hours (TTC), 0.7 hours (WGAN-GP)
+- **CIFAR10 generation training run**: 3.2 hours (TTC), 1.5 hours (WGAN-GP)
+- **Image translation training run**: 18.8 hours
+- **Image denoising training run**: 8.6 hours
 
 ### Hyperparameters
 Hyperparameters for TTC are specified in the text of the paper, with the exception of our hyperparameters for the benchmark denoising technique of Lunz et al. (https://proceedings.neurips.cc/paper/2018/file/d903e9608cfbf08910611e4346a0ba44-Paper.pdf). For this technique we use the default parameters as given in denoise_eval.py, which were selected using a grid search to obtain best mean PSNR over the test dataset.
