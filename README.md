@@ -24,4 +24,6 @@ This code was run on the Graham cluster of Compute Canada (https://www.computeca
 - **Image translation training runs**: 18.8 hours
 - **Image denoising training runs**: 8.6 hours
 
+### Hyperparameters
+Hyperparameters for TTC are specified in the text of the paper, with the exception of our hyperparameters for the benchmark denoising technique of Lunz et al. (https://proceedings.neurips.cc/paper/2018/file/d903e9608cfbf08910611e4346a0ba44-Paper.pdf). For this technique we use the default parameters as given in denoise_eval.py, which were selected using a grid search to obtain best mean PSNR over the test dataset.
 
