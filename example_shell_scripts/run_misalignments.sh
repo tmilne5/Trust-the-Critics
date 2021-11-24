@@ -1,4 +1,4 @@
-##### This file is not intended to be used as is. It provides an example on how we run the misalignments.py python code #####
+##### This file is not intended to be used to run an experiment. It only provides an approximative example of how to run the misalignments.py script #####
 
 #!/bin/bash
 
