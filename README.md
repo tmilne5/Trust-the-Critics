@@ -50,7 +50,7 @@ Other optional arguments (including 'results_path' and 'temp_dir') are described
 
 
 ### WGAN generation 
-For completeness we include the code that was used to obtain the WGAN FID statistics in Table 3 of the paper, which includes the wgan_gp.py and wgan_gp_eval.py scripts. 
+For completeness we include the code that was used to obtain the WGAN FID statistics in Table 3 of the paper, which includes the wgan_gp.py and wgan_gp_eval.py scripts. The former train a WGAN with the InfoGAN architecture on the dataset specified by the 'target' argument, saving generator model dictionaries along the way. The latter evaluates the performance of the generator with the different model dictionaries saved by wgan_gp.py. 
 
   
   
