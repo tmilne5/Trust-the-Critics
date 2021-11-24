@@ -37,7 +37,7 @@ cp -r $temp_dir/log.pkl "$results_folder/not_model_dicts/"
 cp -r $temp_dir/train_config.txt "$results_folder/not_model_dicts/"
 
 #evaluate metrics
-python ttc_eval.py --target $target --source $source --temp_dir $temp_dir --data $temp_dir --model $model --bs 1000 --MMD --FID --numsample 10000 --eval_freq $eval_freq --seed $seed
+python ttc_eval.py --target $target --source $source --temp_dir $temp_dir --data $temp_dir --model $model --bs 1000 --FID --numsample 10000 --eval_freq $eval_freq --seed $seed
 
 cp -r $temp_dir/samples "$results_folder/not_model_dicts/"
 cp -r $temp_dir/metrics.pkl "$results_folder/not_model_dicts/"
