@@ -71,9 +71,9 @@ We ran different versions of the code presented here on Compute Canada (https://
 
 - **MNIST/Fashion MNIST generation training run (TTC)**: 60-90 minutes.
 - **MNIST/Fashion MNIST generation training run (WGAN)**: 45-90 minutes (This includes misalignments computations).
-- **CIFAR10 generation training run**: 3-4 hours (TTC), 90 minutes (WGAN-GP)
-- **Image translation training run**: up to 20 hours
-- **Image denoising training run**: 8-10 hours
+- **CIFAR10 generation training run**: 3-4 hours (TTC), 90 minutes (WGAN-GP).
+- **Image translation training run**: up to 20 hours.
+- **Image denoising training run**: 8-10 hours.
 
 
 
