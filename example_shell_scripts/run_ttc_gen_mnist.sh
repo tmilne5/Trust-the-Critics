@@ -1,5 +1,7 @@
 ##### This file is not intended to be used to run an experiment. It only provides an approximative example of how to train TTC critics for image generation with ttc.py and how to evaluate the generative performance using ttc_eval.py #####
 
+#!/bin/bash
+
 ## Prepare virtual environment
 source #path/to/virtualenv/bin/activate
 

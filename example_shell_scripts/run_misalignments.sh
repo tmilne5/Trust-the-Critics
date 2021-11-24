@@ -1,5 +1,7 @@
 ##### This file is not intended to be used to run an experiment. It only provides an approximative example of how to run the misalignments.py script #####
 
+#!/bin/bash
+
 ## Prepare virtual environment
 source #path/to/virtualenv/bin/activate
 
