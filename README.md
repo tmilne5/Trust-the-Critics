@@ -67,7 +67,7 @@ This repository contains two branches: 'main' and 'reproducible'. You are currec
 
 
 ## Computing Architecture and running times
-We ran different versions of the code presented here on Compute Canada (https://www.computecanada.ca/) clusters always using a single NVIDIA V100 Volta or NVIDIA A100 Ampere GPU. Here are rough estimations of the running times for our experiments
+We ran different versions of the code presented here on Compute Canada (https://www.computecanada.ca/) clusters always using a single NVIDIA V100 Volta or NVIDIA A100 Ampere GPU. Here are rough estimations of the running times for our experiments.
 
 - **MNIST/Fashion MNIST generation training run (TTC)**: 60-90 minutes.
 - **MNIST/Fashion MNIST generation training run (WGAN)**: 45-90 minutes (This includes misalignments computations).
