@@ -1,6 +1,6 @@
 # Trust-the-Critics (Code for Reproducibility)
 
-The main branch of this repository includes a cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the results in Section 5 of the paper. By running the code in this branch with the provided random seeds and packages as in the requirements file, you should get the results from Section 5 exactly.
+The main branch of this repository includes a cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the results in Section 5 of the paper. By running the code in this branch using Python 3.7.4 with the provided random seeds and packages as in the requirements file, you should get the results from Section 5 exactly.
 
 A brief description of the code is included here. See the main branch for more details.
  
@@ -13,7 +13,7 @@ A brief description of the code is included here. See the main branch for more d
 
 
 ### Random Seeds
-The experiments in Section 5.1 of the paper use the random seeds 0, 1, 2, 3, 4 for the distinct training runs. The experiments in Section 5.2 (image translation) do not use a reproducible seed (i.e. seed = -1 in the code); we do not see this as a major obstacle to reproducibility given the subjective nature of the results. The experiments in Section 5.3 use a single random seed of 0 for all noise levels.  
+The experiments in Section 5.1 (image generation) of the paper use the random seeds 0, 1, 2, 3, 4 for the distinct training runs. The experiments in Section 5.2 (image translation) do not use a reproducible seed (i.e. seed = -1 in the code); we do not see this as a major obstacle to reproducibility given the subjective nature of the results. The experiments in Section 5.3 (image denoising) use a single random seed of 0 for all noise levels.  
 
 ### Computing Architecture
 This code was run on the Graham cluster of Compute Canada (https://www.computecanada.ca/), using a single NVIDIA V100 Volta GPU. Approximate training times are as follows:
