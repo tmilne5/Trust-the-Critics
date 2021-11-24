@@ -50,7 +50,7 @@ Other optional arguments (including 'results_path' and 'temp_dir') are described
 
 
 ### WGAN generation 
-For completeness we include the code that was used to obtain the WGAN FID statistics in Table 3 of the paper, which includes the wgan_gp.py and wgan_gp_eval.py scripts. The former train a WGAN with the InfoGAN architecture on the dataset specified by the 'target' argument, saving generator model dictionaries in the folder specified by 'temp_dir' at ten equally spaced stages in training. The latter evaluates the performance of the generator with the different model dictionaries in 'temp_dir'. 
+For completeness we include the code that was used to obtain the WGAN FID statistics in Table 3 of the paper, which includes the wgan_gp.py and wgan_gp_eval.py scripts. The former trains a WGAN with the InfoGAN architecture on the dataset specified by the 'target' argument, saving generator model dictionaries in the folder specified by 'temp_dir' at ten equally spaced stages in training. The wgan_gp_eval.py script evaluates the performance of the generator with the different model dictionaries in 'temp_dir'. 
 
 The necessary arguments to run wgan_gp.py are:
 * 'target' : The name of the dataset to generate (can be either 'mnist', 'fashion' or 'cifar10').
@@ -62,12 +62,12 @@ Once wgan_gp.py has run, wgan_gp_eval.py should be called with the same argument
   
 
 ## Reproducibility
-This repository contains two branches: 'main' and 'reproducible'. You are currectly viewing the 'main' branch, which contains a clean version of the code meant to be easy to read and interpret and that runs more efficiently than the version on the 'reproducible' branch. The results obtained by running the code on this branch are nearly (but not perfectly) identical to the results stated in the papers, the differences stemming from the randomness inherent to the experiments. The 'reproducible' branch allows one to replicate exactly the results stated in the paper (random seeds are specified). 
+This repository contains two branches: 'main' and 'reproducible'. You are currectly viewing the 'main' branch, which contains a clean version of the code meant to be easy to read and interpret and to run more efficiently than the version on the 'reproducible' branch. The results obtained by running the code on this branch are nearly (but not perfectly) identical to the results stated in the papers, the differences stemming from the randomness inherent to the experiments. The 'reproducible' branch allows one to replicate exactly the results stated in the paper (random seeds are specified) for the TTC experiments. 
 
 
 ## Assets 
 Portions of this code, as well as the datasets used to produce our experimental results, make use of existing assets. We provide here a list of all assets used, along with the licenses under which they are distributed, if specified by the originator:
-- The code used for training a wgan as a baseline was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
+- The code used for training a WGAN as a baseline was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
 - **mmd.py**: from https://github.com/EmoryMLIP/OT-Flow, ((c) 2020 EmoryMLIP). Distributed under the MIT licence. Unused in the paper, but provides a separate interesting metric for measuring performance.
 - **pytorch_fid**: from https://github.com/mseitzer/pytorch-fid. Distributed under the Apache License 2.0.
 - **MNIST dataset**: from http://yann.lecun.com/exdb/mnist/. Distributed under the Creative Commons Attribution-Share Alike 3.0 license.
