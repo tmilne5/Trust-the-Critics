@@ -27,14 +27,14 @@ from pytorch_fid import inception
 #get command line args~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 parser = argparse.ArgumentParser('Evaluation code for a list of generators')
+parser.add_argument('--target', type=str, required=True, help = 'target distribution. options = {mnist, fashion, cifar10}')
 parser.add_argument('--temp_dir', type=str, required=True, help = 'directory where model state dicts are located')
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
 parser.add_argument('--dim', type=int, default=64, help = 'int determining network dimensions')
-parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan'])
+parser.add_argument('--model', type=str, default='infogan', choices=['dcgan', 'infogan'])
 parser.add_argument('--seed', type=int, default=-1, help = 'Set random seed for reproducibility')
 parser.add_argument('--bs', type=int, default=128, help = 'batch size')
 parser.add_argument('--num_workers', type=int, default = 0, help = 'number of data loader processes')
-parser.add_argument('--target', type=str, required=True, help = 'target distribution. options = {mnist, fashion, cifar10, celebaHQ}')
 parser.add_argument('--MMD', action= 'store_true', help = 'compute the MMD between args.bs samples of updated source and target')
 parser.add_argument('--FID', action= 'store_true', help = 'compute the FID between 10000 generated examples and test set for each generator.')
 parser.add_argument('--bigsample', action= 'store_true', help = 'Generate 10,000 images for use in computing FID')

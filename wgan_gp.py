@@ -1,5 +1,5 @@
 """
-Code for training baseline wgan_gp on infogan
+Code for training baseline wgan_gp on InfoGAN
 Initially built from www.github.com/caogang/wgan-gp
 """
 
