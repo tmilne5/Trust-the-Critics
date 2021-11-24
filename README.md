@@ -27,12 +27,12 @@ For a generative experiment, run ttc.py with either the source argument to eithe
 
 
 **TTC denoising**  
-For a denoising experiment, run ttc.py with source=='noisybsds500' and target=='bsds500' (specifying a noise level with the argument sigma). Then, run denoise_eval.py, which will add noise to images, denoise them using the TTC algorithm and the saved critics, and evaluate PSNR's. 
+For a denoising experiment, run ttc.py with source=='noisybsds500' and target=='bsds500' (specifying a noise level with the argument sigma). Then, run denoise_eval.py (with the same 'temp_dir', 'data' and 'model' arguments), which will add noise to images, denoise them using the TTC algorithm and the saved critics, and evaluate PSNR's. 
 
 
 
 **TTC Monet translation**  
-recap of this experiment and explanation of how to run it
+For a denoising experiment, run ttc.py with source=='photo' and target=='monet'. Then run ttc_eval.py (with the same 'source', 'target', 'temp_dir', 'data' and 'model' arguments, and presumably with no FID or MMD evaluation), which will sample realistic images from the source and make them look like Monet paintings.
 
 
 
