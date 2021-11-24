@@ -27,7 +27,7 @@ For a generative experiment, run ttc.py with either the source argument to eithe
 
 
 **TTC denoising**  
-For a denoising experiment, run ttc.py with source=='noisybsds500' and target=='bsds500' (specifying a noise level with the argument sigma).
+For a denoising experiment, run ttc.py with source=='noisybsds500' and target=='bsds500' (specifying a noise level with the argument sigma). Then, run denoise_eval.py, which will add noise to images, denoise them using the TTC algorithm and the saved critics, and evaluate PSNR's. 
 
 
 
