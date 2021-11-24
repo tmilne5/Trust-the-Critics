@@ -50,8 +50,14 @@ Other optional arguments (including 'results_path' and 'temp_dir') are described
 
 
 ### WGAN generation 
-For completeness we include the code that was used to obtain the WGAN FID statistics in Table 3 of the paper, which includes the wgan_gp.py and wgan_gp_eval.py scripts. The former train a WGAN with the InfoGAN architecture on the dataset specified by the 'target' argument, saving generator model dictionaries along the way. The latter evaluates the performance of the generator with the different model dictionaries saved by wgan_gp.py. 
+For completeness we include the code that was used to obtain the WGAN FID statistics in Table 3 of the paper, which includes the wgan_gp.py and wgan_gp_eval.py scripts. The former train a WGAN with the InfoGAN architecture on the dataset specified by the 'target' argument, saving generator model dictionaries in the folder specified by 'temp_dir' at ten equally spaced stages in training. The latter evaluates the performance of the generator with the different model dictionaries in 'temp_dir'. 
 
+The necessary arguments to run wgan_gp.py are:
+* 'target' : The name of the dataset to generate (can be either 'mnist', 'fashion' or 'cifar10').
+* 'data' : Folder where the dataset is located.
+* 'temp_dir' : Folder where the model dictionaries are saved.
+
+Once wgan_gp.py has run, wgan_gp_eval.py should be called with the same arguments for 'target', 'data' and 'temp_dir', and setting the 'model' argument to 'infogan'. If evaluating FID, the 'temp_dir' folder needs to contain the test data from the target dataset saved as individual files. For instance, this folder could contain files of the form '00001.jpg', '00002.jpg', etc. (although extensions other than .jpg can be used).
   
   
 
