@@ -1,6 +1,6 @@
 # Trust-the-Critics (Code for Reproducibility)
 
-The main branch of this repository includes a cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the experimental results in the paper. By running the code in this branch with the provided random seeds and packages as in the requirements file, you should get our experimental results exactly.
+The main branch of this repository includes a cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the results in Section 5 of the paper. By running the code in this branch with the provided random seeds and packages as in the requirements file, you should get the results from Section 5 exactly.
 
 A brief description of the code is included here. See the main branch for specifics on how datasets should be saved.
  
@@ -9,7 +9,6 @@ A brief description of the code is included here. See the main branch for specif
 - **denoise_eval.py**: for evaluating trained critics from TTC for image denoising. Adds noise to the test set from BSDS500 and denoises using TTC and the benchmark technique.
 - **wgan_gp.py**: for training a wgan to compare against TTC.
 - **wgan_eval.py**: for producing samples from trained WGAN and optionally computing FID.
-- **misalignment.py**: TO BE ADDED
 - The rest of the code defines functions which are used by the above files.
 
 
