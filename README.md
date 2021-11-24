@@ -65,6 +65,18 @@ Once wgan_gp.py has run, wgan_gp_eval.py should be called with the same argument
 This repository contains two branches: 'main' and 'reproducible'. You are currectly viewing the 'main' branch, which contains a clean version of the code meant to be easy to read and interpret and to run more efficiently than the version on the 'reproducible' branch. The results obtained by running the code on this branch are nearly (but not perfectly) identical to the results stated in the papers, the differences stemming from the randomness inherent to the experiments. The 'reproducible' branch (available at https://anonymous.4open.science/r/Trust-the-Critics-354B) allows one to replicate exactly the results stated in the paper (random seeds are specified) for the TTC experiments. 
 
 
+
+## Computing Architecture and running times
+We ran different versions of the code presented here on Compute Canada (https://www.computecanada.ca/) clusters always using a single NVIDIA V100 Volta or NVIDIA A100 Ampere GPU. Here are rough estimations of the running times for our experiments
+
+- **MNIST/Fashion MNIST generation training run (TTC)**: 60-90 minutes (TTC).
+- **MNIST/Fashion MNIST generation training run (WGAN, possibly with misalignment computations)**: 45-90 minutes
+- **CIFAR10 generation training run**: 3.2 hours (TTC), 1.5 hours (WGAN-GP)
+- **Image translation training run**: 18.8 hours
+- **Image denoising training run**: 8.6 hours
+
+
+
 ## Assets 
 Portions of this code, as well as the datasets used to produce our experimental results, make use of existing assets. We provide here a list of all assets used, along with the licenses under which they are distributed, if specified by the originator:
 - The code used for training a WGAN as a baseline was initially built from a PyTorch implementation (https://github.com/caogang/wgan-gp) of WGAN-GP ((c) 2017 Ishaan Gulrajani). Distributed under the MIT licence
