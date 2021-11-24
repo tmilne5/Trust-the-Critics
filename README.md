@@ -22,7 +22,7 @@ Other optional arguments are described in a commented section at the top of the 
 
 
 **TTC image generation**   
-recap of these experiment and explanation of how to run it
+To run a generative experiment, run ttc.py with either the source argument to either 'noise' or 'untrained_gen' and the target of your choice. Then, run ttc_eval.py, which will use then saved critics to push noise inputs towards the target distribution according to the 
 
 
 
