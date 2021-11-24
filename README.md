@@ -25,7 +25,9 @@ Other optional arguments are described in a commented section at the top of the 
 To run a generative experiment, run ttc.py with either the source argument to either 'noise' or 'untrained_gen' and the target of your choice. Then, run ttc_eval.py, which will use the saved critics to push noise inputs towards the target distribution according to the TTC algorithm (using the steptaker function), and which will evaluate generative performance with FID (and/or MMD). 
 
 Necessary arguments for ttc_eval.py
-* 'source' :
+* 'source' : As in ttc.py
+* 'target' : As in ttc.py
+* 
 
 
 
