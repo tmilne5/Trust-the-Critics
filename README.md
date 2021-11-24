@@ -70,7 +70,7 @@ This repository contains two branches: 'main' and 'reproducible'. You are currec
 We ran different versions of the code presented here on Compute Canada (https://www.computecanada.ca/) clusters, always using a single NVIDIA V100 Volta or NVIDIA A100 Ampere GPU. Here are rough estimations of the running times for our experiments.
 
 - **MNIST/Fashion MNIST generation training run (TTC)**: 60-90 minutes.
-- **MNIST/Fashion MNIST generation training run (WGAN)**: 45-90 minutes (This includes misalignments computations).
+- **MNIST/Fashion MNIST generation training run (WGAN)**: 45-90 minutes (this includes misalignments computations).
 - **CIFAR10 generation training run**: 3-4 hours (TTC), 90 minutes (WGAN-GP).
 - **Image translation training run**: up to 20 hours.
 - **Image denoising training run**: 8-10 hours.
