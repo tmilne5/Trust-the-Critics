@@ -2,7 +2,7 @@
 
 The main branch of this repository includes a cleaned up version of the code for TTC. This branch ("reproducible") includes the code that was run to produce the results in Section 5 of the paper. By running the code in this branch with the provided random seeds and packages as in the requirements file, you should get the results from Section 5 exactly.
 
-A brief description of the code is included here. See the main branch for specifics on how datasets should be saved.
+A brief description of the code is included here. See the main branch for more details.
  
 - **ttc.py**: for training critics using the TTC algorithm. 
 - **ttc_eval.py**: for evaluating trained critics from TTC for either image generation or image translation. This produces samples from the final distribution \mu_N and  optionally computes the FID.
