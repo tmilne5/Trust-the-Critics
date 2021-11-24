@@ -50,7 +50,7 @@ Other optional arguments (including 'results_path' and 'temp_dir') are described
 
 
 ### WGAN generation 
-...
+For completeness we include the code that was used to obtain the WGAN performance figures in Table 3 of the paper.
 
   
   
