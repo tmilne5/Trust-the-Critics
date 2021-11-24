@@ -5,8 +5,8 @@ This repository is a PyTorch implementation of the TTC algorithm and the WGAN mi
 ## How to run this code ##
 * Create a Python virtual environment with Python 3.8 installed.
 * Install the necessary Python packages listed in the requirements.txt file (this can be done through pip install -r /path/to/requirements.txt).
-* Note that computationally heavy????
-* Under example_shell_scripts, we include samples of shell scripts we used to run our experiments...
+
+In the example_shell_scripts folder, we include samples of shell scripts we used to run our experiments. We note that training  generative models is computationally demanding, and thus requires adequate computational resources (i.e. running this on your laptop is not recommended).
 
 
 ### TTC algorithm
