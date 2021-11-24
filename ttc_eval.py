@@ -1,6 +1,9 @@
 """
-Takes a list of critics and step sizes, and produces a sequence of pictures using TTC
-Optional evaluation of FID and MMD (the latter not used in paper)
+Takes a list of critics and step sizes, and produces a sequence of pictures using TTC. 
+Optional evaluation of FID and MMD (the latter not used in paper).
+
+This code is intended to be run to use critics trained with ttc.py to generate samples. The arguments with names repeated from
+arguments ttc.py should be set to the same values used in ttc.py when training the critics.
 """
 
 import os, sys
