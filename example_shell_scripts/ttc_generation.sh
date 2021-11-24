@@ -27,7 +27,7 @@ mkdir "$results_folder/not_model_dicts"
 
 #Prepare data
 cp -r  $target_folder "$temp_dir/MNIST"
-unzip -q  "$temp_dir/MNIST/${target}test.zip" -d "$temp_dir/${target}test" ##Data for FID evaluation also contained in $target_folder
+unzip -q  "$temp_dir/MNIST/mnisttest.zip" -d "$temp_dir/mnisttest" ## Data for FID evaluation also contained in $target_folder
 
 #Run code
 python ttc.py --target $target --source $source --temp_dir $temp_dir --data $temp_dir --lamb $lamb --critters $critters --plus --num_crit $num_crit --theta $theta --seed $seed --bs $bs --model $model
