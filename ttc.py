@@ -36,6 +36,7 @@ import dataloader
 import networks
 from get_training_time import write_training_time
 from critic_trainer import critic_trainer
+from pg_modules.discriminator import ProjectedDiscriminator
 
 #################
 #Get command line args
@@ -45,7 +46,7 @@ parser.add_argument('--source', type=str, default='noise', choices=['noise', 'un
 parser.add_argument('--target', type=str, default='mnist', choices=['cifar10','mnist','fashion', 'celeba', 'bsds500', 'monet', 'celebaHQ', 'all_zero'])
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
 parser.add_argument('--temp_dir', type=str, required=True, help = 'temporary directory for saving')
-parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'norm_taker'])
+parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'norm_taker', 'pg'])
 parser.add_argument('--dim', type=int, default=64, help = 'int determining network dimensions')
 parser.add_argument('--seed', type=int, default=-1, help = 'Set random seed for reproducibility')
 parser.add_argument('--lamb', type=float, default=1000., help = 'parameter multiplying gradient penalty')
@@ -110,7 +111,10 @@ critic_list = [None]*args.num_crit
 steps = [1]*args.num_crit
 
 for i in range(args.num_crit):
-    critic_list[i] = getattr(networks, args.model)(args.dim, args.num_chan, args.hpix, args.wpix)
+    if args.model != 'pg':
+        critic_list[i] = getattr(networks, args.model)(args.dim, args.num_chan, args.hpix, args.wpix)
+    else:
+        critic_list[i] = ProjectedDiscriminator()
 
 if use_cuda:
     for i in range(args.num_crit):
