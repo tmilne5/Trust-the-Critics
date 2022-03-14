@@ -116,7 +116,7 @@ class MultiScaleD(nn.Module):
         self,
         channels,
         resolutions,
-        num_discs=1,
+        num_discs=4,
         proj_type=2,  # 0 = no projection, 1 = cross channel mixing, 2 = cross scale mixing
         cond=0,
         separable=False,
