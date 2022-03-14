@@ -1,8 +1,10 @@
 import torch
 from torch import autograd
+import sys
 
-#~~~~~~Gradient Penalty
-def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus = True):
+
+# ~~~~~~Gradient Penalty
+def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus=True):
     """Computes the gradient penalty from WGAN-GP.
     Inputs:
     - model; the critic network to be penalized
@@ -17,47 +19,45 @@ def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus = True):
     use_cuda = torch.cuda.is_available()
     bs = real_data.shape[0]
 
-
-    alpha = torch.rand(bs,1,1,1)#interpolation parameter
-
+    alpha = torch.rand(bs, 1, 1, 1)  # interpolation parameter
 
     alpha = alpha.cuda() if use_cuda else alpha
     interpolates = alpha * real_data + ((1 - alpha) * fake_data)
 
     if use_cuda:
         interpolates = interpolates.cuda()
-    
+
     interpolates.requires_grad = True
-    disc_interpolates = model(interpolates)#critic evaluated on interpolates
+    disc_interpolates = model(interpolates)  # critic evaluated on interpolates. dims are bs x num_disc
 
     gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
                               grad_outputs=torch.ones_like(disc_interpolates),
                               create_graph=True, retain_graph=True, only_inputs=True)[0]
-    gradients = gradients.reshape(gradients.size(0), -1)
+    print(gradients.shape)  # prediction: bs x num_disc x interpolates dimensions
+    sys.exit()
+    gradients = gradients.view(gradients.size(0), gradients.size(1), -1)
+    gradient_penalty = 0
 
-    if plus:
-        gradient_penalty = (torch.clamp(gradients.norm(2, dim=1)-1,min =0)**2).mean() * LAMBDA
-    else:
-        gradient_penalty = ((gradients.norm(2, dim=1) - 1)**2).mean() * LAMBDA
+    for disc_idx in range(gradients.size(1)):
+        gradient_penalty += (torch.clamp(gradients[:, disc_idx, :].norm(2, dim=1) - 1, min=0) ** 2).mean() * LAMBDA
 
-    return gradient_penalty
+    return gradient_penalty / gradients.size(1)
+
 
 def AL_gradient_penalty(model, real_data, fake_data):
     """Returns a list of gradient norms at interpolates of real and fake"""
     use_cuda = torch.cuda.is_available()
     bs = real_data.shape[0]
 
-
-    alpha = torch.rand(bs,1,1,1)
+    alpha = torch.rand(bs, 1, 1, 1)
     alpha = alpha.expand_as(real_data)
-
 
     alpha = alpha.cuda() if use_cuda else alpha
     interpolates = alpha * real_data + ((1 - alpha) * fake_data)
 
     if use_cuda:
         interpolates = interpolates.cuda()
-    
+
     interpolates.requires_grad = True
     disc_interpolates = model(interpolates)
 
@@ -65,7 +65,6 @@ def AL_gradient_penalty(model, real_data, fake_data):
                               grad_outputs=torch.ones_like(disc_interpolates),
                               create_graph=True, retain_graph=True, only_inputs=True)[0]
     gradients = gradients.view(gradients.size(0), -1)
-    norms = torch.norm(gradients, p =2, dim = 1)
+    norms = torch.norm(gradients, p=2, dim=1)
 
     return norms
-
