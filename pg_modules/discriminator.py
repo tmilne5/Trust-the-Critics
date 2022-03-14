@@ -48,7 +48,7 @@ class SingleDisc(nn.Module):
         layers.append(conv2d(nfc[end_sz], 1, 4, 1, 0, bias=False))
         self.main = nn.Sequential(*layers)
 
-    def forward(self, x, c):
+    def forward(self, x):
         return self.main(x)
 
 
@@ -138,10 +138,10 @@ class MultiScaleD(nn.Module):
             mini_discs += [str(i), Disc(nc=cin, start_sz=start_sz, end_sz=8, separable=separable, patch=patch)],
         self.mini_discs = nn.ModuleDict(mini_discs)
 
-    def forward(self, features, c):
+    def forward(self, features):
         all_logits = []
         for k, disc in self.mini_discs.items():
-            all_logits.append(disc(features[k], c).view(features[k].size(0), -1))
+            all_logits.append(disc(features[k]).view(features[k].size(0), -1))
 
         all_logits = torch.cat(all_logits, dim=1)
         return all_logits
@@ -173,7 +173,7 @@ class ProjectedDiscriminator(torch.nn.Module):
     def eval(self):
         return self.train(False)
 
-    def forward(self, x, c):
+    def forward(self, x):
         if self.diffaug:
             x = DiffAugment(x, policy='color,translation,cutout')
 
@@ -181,6 +181,6 @@ class ProjectedDiscriminator(torch.nn.Module):
             x = F.interpolate(x, 224, mode='bilinear', align_corners=False)
 
         features = self.feature_network(x)
-        logits = self.discriminator(features, c)
+        logits = self.discriminator(features)
 
         return logits
