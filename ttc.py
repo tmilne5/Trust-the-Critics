@@ -115,6 +115,7 @@ for i in range(args.num_crit):
         critic_list[i] = getattr(networks, args.model)(args.dim, args.num_chan, args.hpix, args.wpix)
     else:
         critic_list[i] = ProjectedDiscriminator()
+        critic_list[i].feature_network.requires_grad_(False)
 
 if use_cuda:
     for i in range(args.num_crit):
