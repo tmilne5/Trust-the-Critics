@@ -29,6 +29,7 @@ def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus=True):
 
     interpolates.requires_grad = True
     disc_interpolates = model(interpolates)  # critic evaluated on interpolates. dims are bs x num_disc
+    print('disc_interpolates size {}'.format(disc_interpolates.size()))
 
     gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
                               grad_outputs=torch.ones_like(disc_interpolates),

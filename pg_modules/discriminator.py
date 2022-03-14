@@ -143,7 +143,7 @@ class MultiScaleD(nn.Module):
         for k, disc in self.mini_discs.items():
             all_logits.append(torch.mean(disc(features[k]).view(features[k].size(0), -1), dim=1))
 
-        all_logits = torch.cat(all_logits, dim=1)  # bs x num_disc
+        all_logits = torch.stack(all_logits, dim=1)  # bs x num_disc
         return all_logits
 
 
