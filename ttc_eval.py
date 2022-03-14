@@ -29,6 +29,7 @@ from mmd import mmd
 from steptaker import steptaker
 from pytorch_fid import fid_score
 from pytorch_fid import inception
+from pg_modules.discriminator import ProjectedDiscriminator
 
 
 #get command line args~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +39,7 @@ parser.add_argument('--target', type=str, default='cifar10', choices=['cifar10',
 parser.add_argument('--source', type=str, default='cifar10', choices=['noise', 'untrained_gen', 'photo'])
 parser.add_argument('--temp_dir', type=str, required=True, help = 'directory where model state dicts are located')
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
-parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan'])
+parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'pg'])
 parser.add_argument('--dim', type=int, default=64, help = 'int determining network dimensions')
 parser.add_argument('--seed', type=int, default=-1, help = 'Set random seed for reproducibility')
 parser.add_argument('--bs', type=int, default=128, help = 'batch size')
@@ -84,7 +85,11 @@ if args.commonfake:
 critic_list = [None]*num_crit
 
 for i in range(num_crit):#initialize pre-trained critics
-    critic_list[i] = getattr(networks, args.model)(args.dim, args.num_chan, args.hpix, args.wpix)
+    if args.model != 'pg':
+        critic_list[i] = getattr(networks, args.model)(args.dim, args.num_chan, args.hpix, args.wpix)
+    else:
+        critic_list[i] = ProjectedDiscriminator()
+        critic_list[i].feature_network.requires_grad_(False)
     critic_list[i].load_state_dict(torch.load(os.path.join(temp_dir,'model_dicts','critic{}.pth'.format(i))))
 
 
