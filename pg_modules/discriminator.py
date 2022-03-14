@@ -182,5 +182,6 @@ class ProjectedDiscriminator(torch.nn.Module):
 
         features = self.feature_network(x)
         logits = self.discriminator(features)
+        out = torch.mean(logits, dim=1)
 
-        return logits
+        return out
