@@ -19,7 +19,6 @@ def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus = True):
 
 
     alpha = torch.rand(bs,1,1,1)#interpolation parameter
-    alpha = alpha.expand_as(real_data)
 
 
     alpha = alpha.cuda() if use_cuda else alpha
@@ -34,7 +33,7 @@ def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus = True):
     gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
                               grad_outputs=torch.ones_like(disc_interpolates),
                               create_graph=True, retain_graph=True, only_inputs=True)[0]
-    gradients = gradients.view(gradients.size(0), -1)
+    gradients = gradients.reshape(gradients.size(0), -1)
 
     if plus:
         gradient_penalty = (torch.clamp(gradients.norm(2, dim=1)-1,min =0)**2).mean() * LAMBDA
