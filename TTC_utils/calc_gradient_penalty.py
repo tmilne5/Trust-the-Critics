@@ -31,16 +31,16 @@ def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus=True):
     disc_interpolates = model(interpolates)  # critic evaluated on interpolates. dims are bs x num_disc
     print('disc_interpolates size {}'.format(disc_interpolates.size()))
 
-    gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
-                              grad_outputs=torch.ones_like(disc_interpolates),
-                              create_graph=True, retain_graph=True, only_inputs=True)[0]
-    print(gradients.shape)  # prediction: bs x num_disc x interpolates dimensions
-    sys.exit()
-    gradients = gradients.view(gradients.size(0), gradients.size(1), -1)
     gradient_penalty = 0
 
-    for disc_idx in range(gradients.size(1)):
-        gradient_penalty += (torch.clamp(gradients[:, disc_idx, :].norm(2, dim=1) - 1, min=0) ** 2).mean() * LAMBDA
+    for disc_idx in range(disc_interpolates.size(1)):
+        gradients = autograd.grad(outputs=disc_interpolates[:,disc_idx], inputs=interpolates,
+                              grad_outputs=torch.ones_like(disc_interpolates[:,disc_idx]),
+                              create_graph=True, retain_graph=True, only_inputs=True)[0]
+        print(gradients.shape)  # bs x interpolates dimensions
+        gradients = gradients.view(gradients.size(0), -1)
+
+        gradient_penalty += (torch.clamp(gradients.norm(2, dim=1) - 1, min=0) ** 2).mean() * LAMBDA
 
     return gradient_penalty / gradients.size(1)
 
