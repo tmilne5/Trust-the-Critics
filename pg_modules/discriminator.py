@@ -110,6 +110,11 @@ class SingleDiscCond(nn.Module):
 
         return out
 
+def scale_weights(m):
+    scale = 0.1
+    if isinstance(m, nn.Conv2d):
+        m.weight.data = scale * m.weight.data.clone().detach()
+        print('scaled {} by scale {}'.format(m, scale))
 
 class MultiScaleD(nn.Module):
     def __init__(
@@ -137,6 +142,7 @@ class MultiScaleD(nn.Module):
             start_sz = res if not patch else 16
             mini_discs += [str(i), Disc(nc=cin, start_sz=start_sz, end_sz=8, separable=separable, patch=patch)],
         self.mini_discs = nn.ModuleDict(mini_discs)
+        self.mini_discs.apply(scale_weights)
 
     def forward(self, features):
         all_logits = []
