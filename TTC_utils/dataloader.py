@@ -197,9 +197,9 @@ def all_zero(args, train):#generating all zero data. For validation
     nl = ZeroLoader()
     
     nl.bs = args.bs
-    nl.in_channels = 1
-    nl.hpix = 32
-    nl.wpix = 32
+    nl.in_channels = 3
+    nl.hpix = 128
+    nl.wpix = 128
     
     return nl
 

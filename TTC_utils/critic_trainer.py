@@ -63,7 +63,7 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
 
 
         # Save logs every 1000 iters
-        if (i < 100) or (i % 100 == 99):
+        if (i < 5) or (i % 100 == 99):
             log.flush(args.temp_dir)
 
         log.tick()#increment index of log

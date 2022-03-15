@@ -188,6 +188,6 @@ class ProjectedDiscriminator(torch.nn.Module):
             x = F.interpolate(x, 224, mode='bilinear', align_corners=False)
 
         features = self.feature_network(x)
-        logits = self.discriminator(features)  # bs x num_disc. each column contains output of each discriminator
+        logits = self.discriminator(features)  # bs x 1. discriminators have already been averaged
 
         return logits
