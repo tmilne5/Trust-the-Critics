@@ -144,7 +144,8 @@ class MultiScaleD(nn.Module):
             all_logits.append(torch.mean(disc(features[k]).view(features[k].size(0), -1), dim=1))
 
         all_logits = torch.stack(all_logits, dim=1)  # bs x num_disc
-        return all_logits
+        out = torch.mean(all_logits, dim = 1)  # sum over critics
+        return out
 
 
 class ProjectedDiscriminator(torch.nn.Module):

@@ -47,7 +47,7 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
         D_fake = critic_list[iteration](fake)
         D_fake = -D_fake.mean()
         D_fake.backward()
-       
+        
         # train with gradient penalty
         gradient_penalty = calc_gradient_penalty(critic_list[iteration], real, fake, args.lamb, plus = args.plus)
         gradient_penalty.backward()

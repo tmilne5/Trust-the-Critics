@@ -16,7 +16,6 @@ def steptaker(data, critic, step, num_step = 1):
     for j in range(num_step):
 
         gradients = grad_calc(data, critic)
-
         data = (data - (step/num_step)*gradients).detach()
 
     return data.detach()

@@ -117,6 +117,7 @@ for i in range(args.num_crit):
     else:
         critic_list[i] = ProjectedDiscriminator()
         critic_list[i].feature_network.requires_grad_(False)
+        critic_list[i].feature_network.eval()
 
 if use_cuda:
     for i in range(args.num_crit):
