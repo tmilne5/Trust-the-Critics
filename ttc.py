@@ -36,7 +36,7 @@ import dataloader
 import networks
 from get_training_time import write_training_time
 from critic_trainer import critic_trainer
-from pg_modules.discriminator import ProjectedDiscriminator
+from pg_modules.discriminator import FeatureNetwork, DiscriminatorOnFeatures
 
 #################
 #Get command line args
@@ -111,13 +111,15 @@ with open(config_file_name, 'w') as f:
 critic_list = [None]*args.num_crit
 steps = [1]*args.num_crit
 
+if args.model == 'pg':
+    feature_network = FeatureNetwork()
+
 for i in range(args.num_crit):
     if args.model != 'pg':
         critic_list[i] = getattr(networks, args.model)(args.dim, args.num_chan, args.hpix, args.wpix)
     else:
-        critic_list[i] = ProjectedDiscriminator()
-        critic_list[i].feature_network.requires_grad_(False)
-        critic_list[i].feature_network.eval()
+        critic_list[i] = DiscriminatorOnFeatures(feature_network)
+
 
 if use_cuda:
     for i in range(args.num_crit):
@@ -138,7 +140,7 @@ for iteration in range(args.num_crit):
     # (1) Train D network
     ###########################
     #trains critic at critic_list[iteration], and reports current W1 distance
-    critic_list, Wasserstein_D = critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader, source_loader, args)
+    critic_list, Wasserstein_D = critic_trainer(feature_network, optimizer_list, iteration, steps, target_loader, source_loader, args)
 
     ###########################
     # (2) Pick step size

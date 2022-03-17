@@ -5,9 +5,10 @@ import time
 import torch
 from steptaker import steptaker
 
-def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader, source_loader, args):
+def critic_trainer(feature_network, critic_list, optimizer_list, iteration, steps, target_loader, source_loader, args):
     """Trains critic
     Inputs
+    - feature_network; pretrained feature network
     - critic_list; list of all critics
     - optimizer_list; list of optimizers for critics
     - iteration; which critic are you currently training
@@ -34,6 +35,7 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
         for param in critic_list[iteration].parameters():
             param.grad = None#zero gradients of current critic
 
+        real = feature_network(real)
         D_real = critic_list[iteration](real)
         D_real = D_real.mean()
         D_real.backward()
@@ -43,7 +45,7 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
         for j in range(iteration):
             fake = steptaker(fake, critic_list[j], steps[j], num_step = args.num_step)
 
-
+        fake = feature_network(fake)
         D_fake = critic_list[iteration](fake)
         D_fake = -D_fake.mean()
         D_fake.backward()
