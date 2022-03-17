@@ -17,27 +17,28 @@ def calc_gradient_penalty(model, real_data, fake_data, LAMBDA, plus=True):
     and fake data"""
 
     use_cuda = torch.cuda.is_available()
-    bs = real_data.shape[0]
+    bs = real_data['0'].shape[0]
 
-    alpha = torch.rand(bs, 1, 1, 1)  # interpolation parameter
+    gradient_penalty=0
 
-    alpha = alpha.cuda() if use_cuda else alpha
-    interpolates = alpha * real_data + ((1 - alpha) * fake_data)
+    for key in real_data.keys():
+        alpha = torch.rand(bs, 1, 1, 1) 
+        alpha = alpha.cuda() if use_cuda else alpha
+        
+        interpolates = (alpha * real_data[key] + ((1 - alpha) * fake_data[key])).detach()
 
-    if use_cuda:
-        interpolates = interpolates.cuda()
+        interpolates.requires_grad = True
 
-    interpolates.requires_grad = True
+        disc_interpolates = model.discriminator.mini_discs[key](interpolates)
 
-    disc_interpolates = model(interpolates)
-
-    gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
-                              grad_outputs=torch.ones_like(disc_interpolates),
-                              create_graph=True, retain_graph=True, only_inputs=True)[0]
+        gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
+                                grad_outputs=torch.ones_like(disc_interpolates),
+                                create_graph=True, retain_graph=True, only_inputs=True)[0]
                               
-    gradients = gradients.reshape(gradients.size(0), -1)
+        gradients = gradients.reshape(gradients.size(0), -1)
+        print('avg gradient norm for md {} is {}'.format(key, torch.mean(torch.norm(gradients, dim = 1))))
 
-    gradient_penalty = (torch.clamp(gradients.norm(2, dim=1) - 1, min=0) ** 2).mean() * LAMBDA
+        gradient_penalty += (torch.clamp(gradients.norm(2, dim=1) - 1, min=0) ** 2).mean() * LAMBDA
     #gradient_penalty = 0
 
     """for disc_idx in range(disc_interpolates.size(1)):

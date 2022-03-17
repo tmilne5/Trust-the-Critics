@@ -2,7 +2,7 @@ import torch
 from torch import autograd
 
 
-def steptaker(data, critic, step, num_step = 1):
+def steptaker(data, critic, step, num_step = 1, feature_network = None):
     """Applies gradient descent (GD) to data using critic
     Inputs
     - data; data to apply GD to
@@ -15,7 +15,7 @@ def steptaker(data, critic, step, num_step = 1):
 
     for j in range(num_step):
 
-        gradients = grad_calc(data, critic)
+        gradients = grad_calc(data, critic, feature_network)
         data = (data - (step/num_step)*gradients).detach()
 
     return data.detach()
@@ -45,11 +45,12 @@ def rk4(data, critic, step, num_step = 1):
 
 
 
-def grad_calc(data, critic):
+def grad_calc(data, critic, feature_network):
     """Returns the gradients of critic at data"""
     data = data.detach().clone()
     data.requires_grad = True
-    Dfake = critic(data)
+    Dfake = critic(feature_network(data))
+    print('avg value of critic {}'.format(Dfake.mean()))
 
     gradients = autograd.grad(outputs = Dfake, inputs = data,
                             grad_outputs = torch.ones(Dfake.size()).cuda(), only_inputs=True)[0]

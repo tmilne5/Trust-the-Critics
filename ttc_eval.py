@@ -29,8 +29,8 @@ from mmd import mmd
 from steptaker import steptaker
 from pytorch_fid import fid_score
 from pytorch_fid import inception
-from pg_modules.discriminator import ProjectedDiscriminator
 
+from pg_modules.discriminator import FeatureNetwork, DiscriminatorOnFeatures
 
 #get command line args~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -84,13 +84,16 @@ if args.commonfake:
 
 critic_list = [None]*num_crit
 
+if args.model == 'pg':
+    feature_network = FeatureNetwork()
+    feature_network.eval()
+    feature_network.requires_grad_(False)
+
 for i in range(num_crit):#initialize pre-trained critics
     if args.model != 'pg':
         critic_list[i] = getattr(networks, args.model)(args.dim, args.num_chan, args.hpix, args.wpix)
     else:
-        critic_list[i] = ProjectedDiscriminator()
-        critic_list[i].feature_network.requires_grad_(False)
-        critic_list[i].feature_network.eval()
+        critic_list[i] = DiscriminatorOnFeatures(feature_network)
     critic_list[i].load_state_dict(torch.load(os.path.join(temp_dir,'model_dicts','critic{}.pth'.format(i))))
 
 
@@ -112,6 +115,7 @@ print('\n')
 use_cuda = torch.cuda.is_available()
 
 if use_cuda:
+    feature_network = feature_network.cuda()
     for i in range(num_crit):
         critic_list[i] = critic_list[i].cuda()
 
@@ -178,7 +182,7 @@ for b_idx in tqdm(range(num_batch)):
 
     for i in range(num_crit):#apply the steps of TTC
         eps = torch.tensor(steps[i]).cuda()
-        fake = steptaker(fake, critic_list[i], eps, num_step = args.num_step)
+        fake = steptaker(fake, critic_list[i], eps, num_step = args.num_step, feature_network = feature_network)
 
 
         if ((i+1) % args.eval_freq == 0):

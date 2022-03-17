@@ -113,6 +113,8 @@ steps = [1]*args.num_crit
 
 if args.model == 'pg':
     feature_network = FeatureNetwork()
+    feature_network.eval()
+    feature_network.requires_grad_(False)
 
 for i in range(args.num_crit):
     if args.model != 'pg':
@@ -122,6 +124,7 @@ for i in range(args.num_crit):
 
 
 if use_cuda:
+    feature_network = feature_network.cuda()
     for i in range(args.num_crit):
         critic_list[i] = critic_list[i].cuda()
 
@@ -140,7 +143,7 @@ for iteration in range(args.num_crit):
     # (1) Train D network
     ###########################
     #trains critic at critic_list[iteration], and reports current W1 distance
-    critic_list, Wasserstein_D = critic_trainer(feature_network, optimizer_list, iteration, steps, target_loader, source_loader, args)
+    critic_list, Wasserstein_D = critic_trainer(feature_network, critic_list, optimizer_list, iteration, steps, target_loader, source_loader, args)
 
     ###########################
     # (2) Pick step size

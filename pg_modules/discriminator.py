@@ -233,8 +233,8 @@ class DiscriminatorOnFeatures(torch.nn.Module):
     ):
         super().__init__()
         self.discriminator = MultiScaleD(
-            channels=feature_network.CHANNELS,
-            resolutions=feature_network.RESOLUTIONS,
+            channels=feature_network.feature_network.CHANNELS,
+            resolutions=feature_network.feature_network.RESOLUTIONS,
             **backbone_kwargs,
         )
 
