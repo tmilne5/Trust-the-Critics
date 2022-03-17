@@ -36,7 +36,7 @@ from pg_modules.discriminator import ProjectedDiscriminator
 
 parser = argparse.ArgumentParser('TTC Evaluation Code')
 parser.add_argument('--target', type=str, default='cifar10', choices=['cifar10','mnist','fashion', 'celeba', 'monet', 'celebaHQ'])
-parser.add_argument('--source', type=str, default='cifar10', choices=['noise', 'untrained_gen', 'photo'])
+parser.add_argument('--source', type=str, default='cifar10', choices=['noise', 'untrained_gen', 'photo', 'celebaHQ'])
 parser.add_argument('--temp_dir', type=str, required=True, help = 'directory where model state dicts are located')
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
 parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'pg'])
@@ -90,6 +90,7 @@ for i in range(num_crit):#initialize pre-trained critics
     else:
         critic_list[i] = ProjectedDiscriminator()
         critic_list[i].feature_network.requires_grad_(False)
+        critic_list[i].feature_network.eval()
     critic_list[i].load_state_dict(torch.load(os.path.join(temp_dir,'model_dicts','critic{}.pth'.format(i))))
 
 

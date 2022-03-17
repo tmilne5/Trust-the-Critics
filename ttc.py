@@ -42,7 +42,7 @@ from pg_modules.discriminator import ProjectedDiscriminator
 #Get command line args
 #################
 parser = argparse.ArgumentParser('Training code for TTC')
-parser.add_argument('--source', type=str, default='noise', choices=['noise', 'untrained_gen', 'noisybsds500', 'photo', 'unit_sphere', 'all_zero'])
+parser.add_argument('--source', type=str, default='noise', choices=['noise', 'untrained_gen', 'noisybsds500', 'photo', 'unit_sphere', 'all_zero', 'celebaHQ'])
 parser.add_argument('--target', type=str, default='mnist', choices=['cifar10','mnist','fashion', 'celeba', 'bsds500', 'monet', 'celebaHQ', 'all_zero'])
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
 parser.add_argument('--temp_dir', type=str, required=True, help = 'temporary directory for saving')
