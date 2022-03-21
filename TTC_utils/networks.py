@@ -4,21 +4,23 @@ Zoo of discriminator models for use with TTC
 
 import torch
 from torch import nn
+import numpy as np
 
 
 ##################
 # Simple convolutional block, used by several networks
 ##################
 class ConvBlock(nn.Module):
-    def __init__(self, chan_in = 3, chan_out = 32, ker_size = 3, stride = 1, pad = 1):
+    def __init__(self, chan_in=3, chan_out=32, ker_size=3, stride=1, pad=1):
         super(ConvBlock, self).__init__()
 
-        self.main = nn.Sequential(nn.Conv2d(chan_in, chan_out, ker_size, stride, padding = pad),
-                            nn.LeakyReLU(negative_slope = 0.1))
+        self.main = nn.Sequential(nn.Conv2d(chan_in, chan_out, ker_size, stride, padding=pad),
+                                  nn.LeakyReLU(negative_slope=0.1))
+
     def forward(self, input):
         return self.main(input)
-      
-      
+
+
 ##################
 # Pytorch version of "ConvNetClassifier" from Lunz et. al. Adversarial Regularizers in Inverse Problems
 ##################
@@ -28,22 +30,21 @@ class arConvNet(nn.Module):
         self.h = h
         self.w = w
 
-        conv1 =  ConvBlock(chan_in = num_chan, chan_out =16, ker_size = 5, stride = 1, pad = 2)#produces 16xhxw
-        conv2 =  ConvBlock(chan_in = 16, chan_out =32, ker_size = 5, stride = 1, pad = 2)#produces 32xhxw
-        conv3 =  ConvBlock(chan_in = 32, chan_out =32, ker_size = 5, stride = 2, pad = 2)#produces 32xh/2xw/2
-        conv4 =  ConvBlock(chan_in = 32, chan_out =64, ker_size = 5, stride = 2, pad = 2)#produces 64xh/4xw/4
-        conv5 =  ConvBlock(chan_in = 64, chan_out =64, ker_size = 5, stride = 2, pad = 2)#produces 64xh/8xw/8
-        conv6 =  ConvBlock(chan_in = 64, chan_out =128, ker_size = 5, stride = 2, pad = 2)#produces 128xh/16xw/16
-        
-        self.main = nn.Sequential(conv1,conv2,conv3,conv4,conv5,conv6)
-                    
-        self.linear1 = nn.Sequential(nn.Linear(128*(h//16)*(w//16), 256), nn.LeakyReLU(negative_slope = 0.1))
-        self.linear2 = nn.Linear(256,1)
+        conv1 = ConvBlock(chan_in=num_chan, chan_out=16, ker_size=5, stride=1, pad=2)  # produces 16xhxw
+        conv2 = ConvBlock(chan_in=16, chan_out=32, ker_size=5, stride=1, pad=2)  # produces 32xhxw
+        conv3 = ConvBlock(chan_in=32, chan_out=32, ker_size=5, stride=2, pad=2)  # produces 32xh/2xw/2
+        conv4 = ConvBlock(chan_in=32, chan_out=64, ker_size=5, stride=2, pad=2)  # produces 64xh/4xw/4
+        conv5 = ConvBlock(chan_in=64, chan_out=64, ker_size=5, stride=2, pad=2)  # produces 64xh/8xw/8
+        conv6 = ConvBlock(chan_in=64, chan_out=128, ker_size=5, stride=2, pad=2)  # produces 128xh/16xw/16
+
+        self.main = nn.Sequential(conv1, conv2, conv3, conv4, conv5, conv6)
+
+        self.linear1 = nn.Sequential(nn.Linear(128 * (h // 16) * (w // 16), 256), nn.LeakyReLU(negative_slope=0.1))
+        self.linear2 = nn.Linear(256, 1)
 
     def forward(self, input):
-
         output = self.main(input)
-        output = output.view(-1, 128*(self.h//16)*(self.w//16))
+        output = output.view(-1, 128 * (self.h // 16) * (self.w // 16))
         output = self.linear1(output)
         output = self.linear2(output)
         return output
@@ -55,53 +56,54 @@ class arConvNet(nn.Module):
 class sndcgan(nn.Module):
     def __init__(self, DIM, num_chan, h, w):
         super(sndcgan, self).__init__()
-       
+
         self.DIM = DIM
-        self.final_h = h//8
-        self.final_w = w//8
-        self.main = nn.Sequential(ConvBlock(chan_in = num_chan, chan_out = DIM, ker_size = 3, stride = 1, pad = 1),
-                ConvBlock(chan_in = 1 * DIM, chan_out = 2 * DIM, ker_size = 4, stride = 2, pad = 1),
-                ConvBlock(chan_in = 2 * DIM, chan_out = 2 * DIM, ker_size = 3, stride = 1, pad = 1),
-                ConvBlock(chan_in = 2 * DIM, chan_out = 4 * DIM, ker_size = 4, stride = 2, pad = 1),
-                ConvBlock(chan_in = 4 * DIM, chan_out = 4 * DIM, ker_size = 3, stride = 1, pad = 1),
-                ConvBlock(chan_in = 4 * DIM, chan_out = 8 * DIM, ker_size = 4, stride = 2, pad = 1),
-                ConvBlock(chan_in = 8 * DIM, chan_out = 8 * DIM, ker_size = 3, stride = 1, pad = 1))
-        self.linear = nn.Linear(self.final_h*self.final_w*8*DIM, 1)
+        self.final_h = h // 8
+        self.final_w = w // 8
+        self.main = nn.Sequential(ConvBlock(chan_in=num_chan, chan_out=DIM, ker_size=3, stride=1, pad=1),
+                                  ConvBlock(chan_in=1 * DIM, chan_out=2 * DIM, ker_size=4, stride=2, pad=1),
+                                  ConvBlock(chan_in=2 * DIM, chan_out=2 * DIM, ker_size=3, stride=1, pad=1),
+                                  ConvBlock(chan_in=2 * DIM, chan_out=4 * DIM, ker_size=4, stride=2, pad=1),
+                                  ConvBlock(chan_in=4 * DIM, chan_out=4 * DIM, ker_size=3, stride=1, pad=1),
+                                  ConvBlock(chan_in=4 * DIM, chan_out=8 * DIM, ker_size=4, stride=2, pad=1),
+                                  ConvBlock(chan_in=8 * DIM, chan_out=8 * DIM, ker_size=3, stride=1, pad=1))
+        self.linear = nn.Linear(self.final_h * self.final_w * 8 * DIM, 1)
 
     def forward(self, input):
         output = self.main(input)
-        output = output.view(-1, self.final_h*self.final_w*8*self.DIM)
+        output = output.view(-1, self.final_h * self.final_w * 8 * self.DIM)
         output = self.linear(output)
-        return output   
-    
-    
-################
+        return output
+
+    ################
+
+
 # BSNDC discriminator, which is SNDC discriminator with more convolutions
 ################
 class bsndcgan(nn.Module):
     def __init__(self, DIM, num_chan, h, w):
         super(bsndcgan, self).__init__()
-       
+
         self.DIM = DIM
-        self.final_h = max(h//128,1)
-        self.final_w = max(w//128,1)
-        main = nn.Sequential(ConvBlock(chan_in = num_chan, chan_out = DIM, ker_size = 3, stride = 1, pad = 1),
-                ConvBlock(chan_in = 1 * DIM, chan_out = 2 * DIM, ker_size = 4, stride = 2, pad = 1),
-                ConvBlock(chan_in = 2 * DIM, chan_out = 2 * DIM, ker_size = 3, stride = 1, pad = 1),
-                ConvBlock(chan_in = 2 * DIM, chan_out = 4 * DIM, ker_size = 4, stride = 2, pad = 1),
-                ConvBlock(chan_in = 4 * DIM, chan_out = 4 * DIM, ker_size = 3, stride = 1, pad = 1),
-                ConvBlock(chan_in = 4 * DIM, chan_out = 8 * DIM, ker_size = 4, stride = 2, pad = 1),
-                ConvBlock(chan_in = 8 * DIM, chan_out = 8 * DIM, ker_size = 3, stride = 1, pad = 1),
-                ConvBlock(chan_in = 8 * DIM, chan_out = 8 * DIM, ker_size = 3, stride = 2, pad = 1),
-                ConvBlock(chan_in = 8 * DIM, chan_out = 8 * DIM, ker_size = 3, stride = 2, pad = 1),
-                ConvBlock(chan_in = 8 * DIM, chan_out = 8 * DIM, ker_size = 4, stride = 1, pad = 0),
-                )
+        self.final_h = max(h // 128, 1)
+        self.final_w = max(w // 128, 1)
+        main = nn.Sequential(ConvBlock(chan_in=num_chan, chan_out=DIM, ker_size=3, stride=1, pad=1),
+                             ConvBlock(chan_in=1 * DIM, chan_out=2 * DIM, ker_size=4, stride=2, pad=1),
+                             ConvBlock(chan_in=2 * DIM, chan_out=2 * DIM, ker_size=3, stride=1, pad=1),
+                             ConvBlock(chan_in=2 * DIM, chan_out=4 * DIM, ker_size=4, stride=2, pad=1),
+                             ConvBlock(chan_in=4 * DIM, chan_out=4 * DIM, ker_size=3, stride=1, pad=1),
+                             ConvBlock(chan_in=4 * DIM, chan_out=8 * DIM, ker_size=4, stride=2, pad=1),
+                             ConvBlock(chan_in=8 * DIM, chan_out=8 * DIM, ker_size=3, stride=1, pad=1),
+                             ConvBlock(chan_in=8 * DIM, chan_out=8 * DIM, ker_size=3, stride=2, pad=1),
+                             ConvBlock(chan_in=8 * DIM, chan_out=8 * DIM, ker_size=3, stride=2, pad=1),
+                             ConvBlock(chan_in=8 * DIM, chan_out=8 * DIM, ker_size=4, stride=1, pad=0),
+                             )
         self.main = main
-        self.linear = nn.Linear(self.final_h*self.final_w*8*DIM, 1)
+        self.linear = nn.Linear(self.final_h * self.final_w * 8 * DIM, 1)
 
     def forward(self, input):
         output = self.main(input)
-        output = output.view(-1, self.final_h*self.final_w*8*self.DIM)
+        output = output.view(-1, self.final_h * self.final_w * 8 * self.DIM)
         output = self.linear(output)
         return output
 
@@ -112,42 +114,44 @@ class bsndcgan(nn.Module):
 class dcgan(nn.Module):
     def __init__(self, DIM, num_chan, h, w):
         super(dcgan, self).__init__()
-       
+
         self.DIM = DIM
-        self.final_h = h//8
-        self.final_w = w//8
-        main = nn.Sequential(nn.Conv2d(num_chan, DIM, 3, 2,padding = 1),
-                nn.LeakyReLU(),
-                nn.Conv2d(DIM, 2*DIM, 3, 2, padding = 1),
-                nn.LeakyReLU(),
-                nn.Conv2d(2 * DIM, 4 * DIM, 3, 2, padding = 1),
-                nn.LeakyReLU())
+        self.final_h = h // 8
+        self.final_w = w // 8
+        main = nn.Sequential(nn.Conv2d(num_chan, DIM, 3, 2, padding=1),
+                             nn.LeakyReLU(),
+                             nn.Conv2d(DIM, 2 * DIM, 3, 2, padding=1),
+                             nn.LeakyReLU(),
+                             nn.Conv2d(2 * DIM, 4 * DIM, 3, 2, padding=1),
+                             nn.LeakyReLU())
         self.main = main
-        self.linear = nn.Linear(self.final_h*self.final_w*4*DIM, 1)
+        self.linear = nn.Linear(self.final_h * self.final_w * 4 * DIM, 1)
 
     def forward(self, input):
         output = self.main(input)
-        output = output.view(-1, self.final_h*self.final_w*4*self.DIM)
+        output = output.view(-1, self.final_h * self.final_w * 4 * self.DIM)
         output = self.linear(output)
         return output
 
+
 # We also include the InfoGAN generator for WGAN experiments
-class dcgan_generator(nn.Module):#added bias = False to each module followed by a batchnorm, as batchnorm will send mean to 0, effectively cancelling any learned bias
+class dcgan_generator(
+    nn.Module):  # added bias = False to each module followed by a batchnorm, as batchnorm will send mean to 0, effectively cancelling any learned bias
     def __init__(self, DIM, num_chan, h, w):
         super(dcgan_generator, self).__init__()
         preprocess = nn.Sequential(
-            nn.Linear(128, 4 * 4 * 4 * DIM, bias = False),#latent dimension is 128
+            nn.Linear(128, 4 * 4 * 4 * DIM, bias=False),  # latent dimension is 128
             nn.BatchNorm1d(4 * 4 * 4 * DIM),
             nn.ReLU(True)
         )
 
         block1 = nn.Sequential(
-            nn.ConvTranspose2d(4 * DIM, 2 * DIM, 2, stride=2, bias = False),
+            nn.ConvTranspose2d(4 * DIM, 2 * DIM, 2, stride=2, bias=False),
             nn.BatchNorm2d(2 * DIM),
             nn.ReLU(True),
         )
         block2 = nn.Sequential(
-            nn.ConvTranspose2d(2 * DIM, DIM, 2, stride=2, bias = False),
+            nn.ConvTranspose2d(2 * DIM, DIM, 2, stride=2, bias=False),
             nn.BatchNorm2d(DIM),
             nn.ReLU(True),
         )
@@ -178,48 +182,49 @@ class dcgan_generator(nn.Module):#added bias = False to each module followed by 
 class infogan(nn.Module):
     def __init__(self, DIM, num_chan, h, w):
         super(infogan, self).__init__()
-       
+
         self.DIM = DIM
-        self.final_h = h//4
-        self.final_w = w//4
-        main = nn.Sequential(ConvBlock(chan_in = num_chan, chan_out = DIM, ker_size = 4, stride = 2, pad = 1),
-                ConvBlock(chan_in = DIM, chan_out = 2 * DIM, ker_size = 4, stride = 2, pad = 1),
-                )
+        self.final_h = h // 4
+        self.final_w = w // 4
+        main = nn.Sequential(ConvBlock(chan_in=num_chan, chan_out=DIM, ker_size=4, stride=2, pad=1),
+                             ConvBlock(chan_in=DIM, chan_out=2 * DIM, ker_size=4, stride=2, pad=1),
+                             )
         self.main = main
-        self.fc1 = nn.Sequential(nn.Linear(self.final_h*self.final_w*2*DIM, 1024),
-                nn.LeakyReLU(negative_slope = 0.1))
+        self.fc1 = nn.Sequential(nn.Linear(self.final_h * self.final_w * 2 * DIM, 1024),
+                                 nn.LeakyReLU(negative_slope=0.1))
         self.fc2 = nn.Linear(1024, 1)
 
     def forward(self, input):
         output = self.main(input)
-        output = output.view(-1, self.final_h*self.final_w*2*self.DIM)
+        output = output.view(-1, self.final_h * self.final_w * 2 * self.DIM)
         output = self.fc1(output)
         output = self.fc2(output)
         return output
+
 
 # We also include the InfoGAN generator for WGAN experiments
 class infogan_generator(nn.Module):
     def __init__(self, DIM, num_chan, h, w):
         super(infogan_generator, self).__init__()
         self.fc1 = nn.Sequential(
-            nn.Linear(64, 1024, bias = False),#latent dimension is 64
+            nn.Linear(64, 1024, bias=False),  # latent dimension is 64
             nn.BatchNorm1d(1024),
             nn.ReLU(True)
         )
 
         self.fc2 = nn.Sequential(
-            nn.Linear(1024,128 * (h // 4) * (w // 4) , bias = False),
+            nn.Linear(1024, 128 * (h // 4) * (w // 4), bias=False),
             nn.BatchNorm1d(128 * (h // 4) * (w // 4)),
             nn.ReLU(True)
         )
 
         self.conv1 = nn.Sequential(
-            nn.ConvTranspose2d(128, 64, 4, stride=2, bias = False, padding = 1),
+            nn.ConvTranspose2d(128, 64, 4, stride=2, bias=False, padding=1),
             nn.BatchNorm2d(64),
             nn.ReLU(True),
         )
         self.conv2 = nn.Sequential(
-            nn.ConvTranspose2d(64, num_chan, 4, stride=2, bias = False, padding = 1),
+            nn.ConvTranspose2d(64, num_chan, 4, stride=2, bias=False, padding=1),
         )
 
         self.tanh = nn.Tanh()
@@ -244,15 +249,93 @@ class infogan_generator(nn.Module):
 """If you use this discriminator in conjunction with the unit_sphere source and the
 all_zero target, the critic should converge to the norm function, and the value of the loss
 function should decay geometrically from 1 to 0 with rate (1-theta)"""
+
+
 class norm_taker(nn.Module):
     def __init__(self, DIM, num_chan, h, w):
         super(norm_taker, self).__init__()
-       
+
         self.fc1 = nn.Linear(1, 1)
-        self.fc1.weight.data = 0.1*torch.randn([1,1])+torch.ones([1,1])
-        self.total_dim = num_chan*h*w
+        self.fc1.weight.data = 0.1 * torch.randn([1, 1]) + torch.ones([1, 1])
+        self.total_dim = num_chan * h * w
 
     def forward(self, input):
-        output = torch.norm(input.view(-1, self.total_dim), dim = 1, keepdim = True)
+        output = torch.norm(input.view(-1, self.total_dim), dim=1, keepdim=True)
         output = self.fc1(output)
+        return output
+
+
+##############
+# A discriminator like the ResNet discriminator StyleGAN2-ADA
+##############
+
+class from_RGB(nn.Module):
+    def __init__(self, chan_in, chan_out):
+        super(from_RGB, self).__init__()
+
+        self.one_d_Conv = ConvBlock(chan_in=chan_in, chan_out=chan_out, ker_size=1, stride=0, pad=0)
+
+    def forward(self, input):
+        return self.one_d_Conv(input)
+
+
+class Block(nn.Module):
+    def __init__(self, chan_in, chan_out):
+        # conv1 maintains resolution
+        self.conv1 = ConvBlock(chan_in=chan_in, chan_out=chan_in, ker_size=3, stride=1, pad=1)
+        # the avgpool of conv2 reduces resolution by 1, and the strided conv halves that.
+        self.conv2 = nn.Sequential(nn.AvgPool2d(4, stride=1, padding=1),
+                                   ConvBlock(chan_in=chan_in, chan_out=chan_out, ker_size=3,
+                                             stride=2,
+                                             pad=1))
+        # Average pooling reduces resolution by half. Overlapping windows used to (hopefully) avoid blockyness
+        self.skip = nn.Sequential(nn.AvgPool2d(4, stride=2, padding=1),
+                                  ConvBlock(chan_in=chan_in, chan_out=chan_out, ker_size=1,
+                                            stride=0,
+                                            pad=0))
+
+    def forward(self, input):
+        output = self.conv1(input)
+        output = self.conv2(output)
+        skip = self.skip(input)
+        return 2 ** (-1 / 2) * (skip + output)  # used gain of 2^(-1/2) based on Stylegan paper
+
+
+class Epilogue(nn.Module):
+    def __init__(self, chan_in, res):
+        # no extra conv since we don't do minibatch std; this would make the discriminator depend on the batch,
+        # as opposed to being defined pointwise.
+        self.fc = nn.Sequential(nn.Linear(chan_in * res ** 2, chan_in), nn.LeakyReLU(negative_slope=0.1))
+        self.out = nn.Sequential(nn.Linear(chan_in, 1))
+
+    def forward(self, inputs):
+        output = self.fc(inputs.flatten(1))
+        return self.out(output)
+
+
+class stylegan_disc(nn.Module):
+    def __init__(self, dim, num_chan, h, w):
+        max_chan = 512
+        channel_base = dim * h  # used in channels_dict formula to get dim initial channels
+        log_resolution = int(np.log2(h))
+        self.block_resolutions = [2 ** i for i in range(log_resolution, 1, -1)]  # from 128 to 4
+        # from dim (usually 64) to a max of max_chan (usually 512)
+        channels_dict = {res: min(channel_base // res, max_chan) for res in self.block_resolutions}
+
+        self.from_RGB = from_RGB(num_chan, channels_dict[h])
+        for res in self.block_resolutions:
+            in_channels = channels_dict[res]
+            out_channels = channels_dict[res // 2]
+            block = Block(in_channels, out_channels)
+            setattr(self, 'b{}'.format(res), block)
+
+        self.b4 = Epilogue(channels_dict[4], 4)
+
+    def forward(self, inputs):
+        output = self.from_RGB(inputs)
+        for res in self.block_resolutions:
+            block = getattr(self, 'b{}'.format(res))
+            output = block(output)
+
+        output = self.b4(output)
         return output
