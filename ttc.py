@@ -45,7 +45,7 @@ parser.add_argument('--source', type=str, default='noise', choices=['noise', 'un
 parser.add_argument('--target', type=str, default='mnist', choices=['cifar10','mnist','fashion', 'celeba', 'bsds500', 'monet', 'celebaHQ', 'all_zero'])
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
 parser.add_argument('--temp_dir', type=str, required=True, help = 'temporary directory for saving')
-parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'norm_taker'])
+parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'norm_taker', 'stylegan_disc'])
 parser.add_argument('--dim', type=int, default=64, help = 'int determining network dimensions')
 parser.add_argument('--seed', type=int, default=-1, help = 'Set random seed for reproducibility')
 parser.add_argument('--lamb', type=float, default=1000., help = 'parameter multiplying gradient penalty')

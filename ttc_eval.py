@@ -38,7 +38,7 @@ parser.add_argument('--target', type=str, default='cifar10', choices=['cifar10',
 parser.add_argument('--source', type=str, default='cifar10', choices=['noise', 'untrained_gen', 'photo'])
 parser.add_argument('--temp_dir', type=str, required=True, help = 'directory where model state dicts are located')
 parser.add_argument('--data', type=str, required=True, help = 'directory where data is located')
-parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan'])
+parser.add_argument('--model', type=str, default='dcgan', choices=['dcgan', 'infogan', 'arConvNet', 'sndcgan','bsndcgan', 'stylegan_disc'])
 parser.add_argument('--dim', type=int, default=64, help = 'int determining network dimensions')
 parser.add_argument('--seed', type=int, default=-1, help = 'Set random seed for reproducibility')
 parser.add_argument('--bs', type=int, default=128, help = 'batch size')

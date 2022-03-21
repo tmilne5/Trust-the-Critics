@@ -273,7 +273,7 @@ class from_RGB(nn.Module):
     def __init__(self, chan_in, chan_out):
         super(from_RGB, self).__init__()
 
-        self.one_d_Conv = ConvBlock(chan_in=chan_in, chan_out=chan_out, ker_size=1, stride=0, pad=0)
+        self.one_d_Conv = ConvBlock(chan_in=chan_in, chan_out=chan_out, ker_size=1, stride=1, pad=0)
 
     def forward(self, input):
         return self.one_d_Conv(input)
@@ -281,6 +281,7 @@ class from_RGB(nn.Module):
 
 class Block(nn.Module):
     def __init__(self, chan_in, chan_out):
+        super(Block, self).__init__()
         # conv1 maintains resolution
         self.conv1 = ConvBlock(chan_in=chan_in, chan_out=chan_in, ker_size=3, stride=1, pad=1)
         # the avgpool of conv2 reduces resolution by 1, and the strided conv halves that.
@@ -291,7 +292,7 @@ class Block(nn.Module):
         # Average pooling reduces resolution by half. Overlapping windows used to (hopefully) avoid blockyness
         self.skip = nn.Sequential(nn.AvgPool2d(4, stride=2, padding=1),
                                   ConvBlock(chan_in=chan_in, chan_out=chan_out, ker_size=1,
-                                            stride=0,
+                                            stride=1,
                                             pad=0))
 
     def forward(self, input):
@@ -303,10 +304,11 @@ class Block(nn.Module):
 
 class Epilogue(nn.Module):
     def __init__(self, chan_in, res):
+        super(Epilogue, self).__init__()
         # no extra conv since we don't do minibatch std; this would make the discriminator depend on the batch,
         # as opposed to being defined pointwise.
         self.fc = nn.Sequential(nn.Linear(chan_in * res ** 2, chan_in), nn.LeakyReLU(negative_slope=0.1))
-        self.out = nn.Sequential(nn.Linear(chan_in, 1))
+        self.out = nn.Linear(chan_in, 1)
 
     def forward(self, inputs):
         output = self.fc(inputs.flatten(1))
@@ -315,12 +317,13 @@ class Epilogue(nn.Module):
 
 class stylegan_disc(nn.Module):
     def __init__(self, dim, num_chan, h, w):
+        super(stylegan_disc, self).__init__()
         max_chan = 512
         channel_base = dim * h  # used in channels_dict formula to get dim initial channels
         log_resolution = int(np.log2(h))
-        self.block_resolutions = [2 ** i for i in range(log_resolution, 1, -1)]  # from 128 to 4
+        self.block_resolutions = [2 ** i for i in range(log_resolution, 2, -1)]  # from 128 to 8
         # from dim (usually 64) to a max of max_chan (usually 512)
-        channels_dict = {res: min(channel_base // res, max_chan) for res in self.block_resolutions}
+        channels_dict = {res: min(channel_base // res, max_chan) for res in self.block_resolutions + [4]}
 
         self.from_RGB = from_RGB(num_chan, channels_dict[h])
         for res in self.block_resolutions:
@@ -336,6 +339,13 @@ class stylegan_disc(nn.Module):
         for res in self.block_resolutions:
             block = getattr(self, 'b{}'.format(res))
             output = block(output)
-
         output = self.b4(output)
         return output
+
+if __name__=='__main__':
+    disc = stylegan_disc(64, 3, 128, 128)
+    x = torch.rand([10, 3, 128, 128])
+    print('value of disc {}'.format(disc(x)))
+    #bdisc = bsndcgan(64, 3, 128, 128)
+
+    #print('value of bsndc disc {}'.format(bdisc(x)))
