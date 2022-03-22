@@ -307,12 +307,12 @@ class Epilogue(nn.Module):
         super(Epilogue, self).__init__()
         # no extra conv since we don't do minibatch std; this would make the discriminator depend on the batch,
         # as opposed to being defined pointwise.
-        self.fc = nn.Sequential(nn.Linear(chan_in * res ** 2, chan_in), nn.LeakyReLU(negative_slope=0.1))
+        self.fc = nn.Sequential(nn.Linear(chan_in * res ** 2, chan_in), nn.LeakyReLU(negative_slope=0.2))
         self.out = nn.Linear(chan_in, 1)
 
     def forward(self, inputs):
         output = self.fc(inputs.flatten(1))
-        return self.out(output)
+        return 2**(1/2) * self.out(output)
 
 
 class stylegan_disc(nn.Module):

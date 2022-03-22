@@ -59,6 +59,7 @@ parser.add_argument('--num_crit', type=int, default = 5, help = 'number of criti
 parser.add_argument('--num_step', type=int, default=1, help = 'how many steps to use in gradient descent')
 parser.add_argument('--beta_1', type=float, default=0.5, help = 'beta_1 for Adam')
 parser.add_argument('--beta_2', type=float, default=0.999, help = 'beta_2 for Adam')
+parser.add_argument('--clr', type=float, default=1e-4, help = 'learning rate for critics')
 
 args = parser.parse_args()
 
@@ -121,7 +122,7 @@ if use_cuda:
 optimizer_list = [None]*args.num_crit
 print('Adam parameters are {} and {}'.format(args.beta_1, args.beta_2))
 for i in range(args.num_crit):
-    optimizer_list[i] = optim.Adam(critic_list[i].parameters(), lr=1e-4, betas=(args.beta_1, args.beta_2))
+    optimizer_list[i] = optim.Adam(critic_list[i].parameters(), lr=args.clr, betas=(args.beta_1, args.beta_2))
 
 
 abs_start = time.time()
