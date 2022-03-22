@@ -43,6 +43,7 @@ parser.add_argument('--bs', type=int, default=128, help='batch size')
 parser.add_argument('--num_workers', type=int, default=0, help='number of data loader processes')
 parser.add_argument('--num_batch', type=int, default=100, help='number of times to redo generation')
 parser.add_argument('--epsilon', type=float, default=0.01, help='std of noise for perturbations')
+parser.add_argument('--crop_size', type=int, default=128, help='size of centre crop')
 
 args = parser.parse_args()
 
@@ -68,9 +69,6 @@ args.wpix = target_loader.wpix
 
 source_loader = getattr(dataloader, args.source)(args, train=False)
 
-if args.commonfake:
-    gen = iter(source_loader)
-    commonfake = next(gen)[0]
 
 # begin definitions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -117,30 +115,40 @@ if args.seed != -1:  # if non-default seed
     random.seed(args.seed)
 
 init_fake = next(gen)[0]
-fake = init_fake.cuda()
+fake = init_fake.detach().clone().cuda()
 
 finite_differences = []
+midway = fake.size(3)//2
+lower = midway - args.crop_size//2
+upper = midway + args.crop_size//2 
 
 for b_idx in tqdm(range(args.num_batch)):
     if b_idx > 0:
         noise = args.epsilon * torch.randn_like(init_fake)
-        noise_mags = torch.norm(noise.flatten(1), dim=1) ** (-1)
+        noise_mags = torch.norm(noise[:,:,lower:upper,lower:upper].flatten(1), dim=1) ** (-1)
+        noise_mags = noise_mags.cuda()
         fake = (init_fake + noise).detach().clone()
         fake = fake.cuda()
 
     for i in range(num_crit):  # apply the steps of TTC
         eps = torch.tensor(steps[i]).cuda()
-        fake = steptaker(fake, critic_list[i], eps, num_step=args.num_step)
+        fake = steptaker(fake, critic_list[i], eps)
 
     if b_idx == 0:
         base_point = fake.detach().clone()
+        cropped_base = base_point[:,:, lower:upper, lower:upper]
     else:
-        finite_differences.append(torch.norm(torch.flatten(base_point - fake, dims=1), dim=1) * noise_mags)
+        cropped_fake = fake[:,:, lower:upper, lower:upper]
+        finite_differences.append(torch.norm((cropped_base-cropped_fake).flatten(1), dim=1) * noise_mags)
 
-    generate_image(b_idx, fake.detach().cpu(), 'jpg', temp_dir)
-
-finite_differences = torch.mean(torch.stack(finite_differences, dim=1), dim=1)
+    #generate_image(b_idx, fake.detach().cpu(), 'jpg', temp_dir)
+finite_differences = torch.stack(finite_differences, dim =1)
+fd_std = torch.std(finite_differences, dim = 1)
+finite_differences = torch.mean(finite_differences, dim=1)
 order = torch.argsort(finite_differences)
+print('sorted finite differences {}'.format(finite_differences[order]))
+print('corresponding stds{}'.format(fd_std[order]))
+
 base_point = base_point[order, :, :, :]
 generate_image('sorted', base_point.detach().cpu(), 'jpg', temp_dir)
 
