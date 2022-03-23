@@ -4,6 +4,7 @@ import log
 import time
 import torch
 from steptaker import steptaker
+from ppl_reg import ppl_reg
 
 def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader, source_loader, args):
     """Trains critic
@@ -52,6 +53,10 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
         gradient_penalty = calc_gradient_penalty(critic_list[iteration], real, fake, args.lamb, plus = args.plus)
         gradient_penalty.backward()
 
+        if args.lambda_ppl >0:
+            ppl_penalty = ppl_reg(fake, critic_list[iteration], args)
+            ppl_penalty.backward()
+
         D_cost = D_real + D_fake + gradient_penalty #D_fake has negative baked in
         D_cost_nopen = D_real + D_fake #to get a sense of magnitude of gradient penalty
         optimizer_list[iteration].step()
@@ -60,6 +65,8 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
         log.plot('dcost', D_cost.cpu().data.numpy())
         log.plot('time', time.time() - start_time)
         log.plot('no_gpen', D_cost_nopen.cpu().data.numpy())
+        if args.lambda_ppl>0:
+            log.plot('ppl', ppl_penalty.cpu().data.numpy())
 
 
         # Save logs every 1000 iters
