@@ -46,13 +46,13 @@ def rk4(data, critic, step, num_step = 1):
 
 
 
-def grad_calc(data, critic):
+def grad_calc(data, critic, create_graph=False):
     """Returns the gradients of critic at data"""
     data = data.detach().clone()
     data.requires_grad = True
     Dfake = critic(data)
 
     gradients = autograd.grad(outputs = Dfake, inputs = data,
-                            grad_outputs = torch.ones(Dfake.size()).cuda(), only_inputs=True)[0]
-    return gradients.detach()
+                            grad_outputs = torch.ones(Dfake.size()).cuda(), only_inputs=True, create_graph=create_graph)[0]
+    return gradients if create_graph else gradients.detach()
     

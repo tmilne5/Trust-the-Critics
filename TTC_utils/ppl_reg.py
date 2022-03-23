@@ -1,5 +1,5 @@
 import torch
-from steptaker import steptaker
+from steptaker import grad_calc
 
 def ppl_reg(init_fake, critic, args):
     """Computes ppl regularization
@@ -17,10 +17,10 @@ def ppl_reg(init_fake, critic, args):
     noise = args.epsilon * torch.randn_like(init_fake)
     noise_mags = torch.norm(noise.flatten(1), dim=1) ** (-1)
 
-    perturbed_fake = (init_fake + noise).detach().clone()
+    perturbed_fake = init_fake + noise
 
-    perturbed_fake = steptaker(perturbed_fake, critic, eps)
-    init_fake = steptaker(init_fake, critic, eps)
+    perturbed_fake = grad_calc(perturbed_fake, critic, create_graph=True)
+    init_fake = grad_calc(init_fake, critic, create_graph=True)
 
     fdq = torch.norm((perturbed_fake - init_fake).flatten(1), dim=1) * noise_mags  # finite difference quotient
 

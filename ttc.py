@@ -61,7 +61,7 @@ parser.add_argument('--beta_1', type=float, default=0.5, help = 'beta_1 for Adam
 parser.add_argument('--beta_2', type=float, default=0.999, help = 'beta_2 for Adam')
 parser.add_argument('--clr', type=float, default=1e-4, help = 'learning rate for critics')
 parser.add_argument('--epsilon', type=float, default=1e-2, help = 'magnitude of noise for ppl regularization')
-parser.add_argument('--lambda_ppl', type=float, default=10, help = 'regularization parameter for ppl')
+parser.add_argument('--lambda_ppl', type=float, default=0, help = 'regularization parameter for ppl')
 
 
 args = parser.parse_args()

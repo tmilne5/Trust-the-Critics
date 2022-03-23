@@ -53,9 +53,10 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
         gradient_penalty = calc_gradient_penalty(critic_list[iteration], real, fake, args.lamb, plus = args.plus)
         gradient_penalty.backward()
 
-        if args.lambda_ppl >0:
+        if args.lambda_ppl >0 and i % 10 == 0:
             ppl_penalty = ppl_reg(fake, critic_list[iteration], args)
             ppl_penalty.backward()
+            log.plot('ppl', ppl_penalty.cpu().data.numpy())
 
         D_cost = D_real + D_fake + gradient_penalty #D_fake has negative baked in
         D_cost_nopen = D_real + D_fake #to get a sense of magnitude of gradient penalty
@@ -65,8 +66,6 @@ def critic_trainer(critic_list, optimizer_list, iteration, steps, target_loader,
         log.plot('dcost', D_cost.cpu().data.numpy())
         log.plot('time', time.time() - start_time)
         log.plot('no_gpen', D_cost_nopen.cpu().data.numpy())
-        if args.lambda_ppl>0:
-            log.plot('ppl', ppl_penalty.cpu().data.numpy())
 
 
         # Save logs every 1000 iters
