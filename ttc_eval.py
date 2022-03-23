@@ -29,6 +29,7 @@ from mmd import mmd
 from steptaker import steptaker
 from pytorch_fid import fid_score
 from pytorch_fid import inception
+from fdq_rejection import fdq_rejection
 
 
 #get command line args~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,6 +51,9 @@ parser.add_argument('--eval_freq', type=int, default = 5, help = 'frequency of M
 parser.add_argument('--num_step', type=int, default=1, help = 'how many steps to use in gradient descent')
 parser.add_argument('--commonfake', action= 'store_true', help = 'Use if you want a common source element to compare two models')
 parser.add_argument('--translate_eval', type=int, default = -1, help = 'index for particular image you want translated')
+parser.add_argument('--keep_rate', type=float, default = 1.0, help = 'If <1, does rejection based on finite difference quotient')
+parser.add_argument('--epsilon', type=float, default = 0.01, help = 'std of noise for fdqs')
+parser.add_argument('--crop_size', type=int, default = 64, help = 'resolution of crop for fdq computation')
 args = parser.parse_args()
 
 temp_dir = args.temp_dir#directory for temp saving
@@ -117,7 +121,7 @@ gen = iter(source_loader)#make dataloaders into iterables
 tgen = iter(target_loader)
 
 if args.numsample>0:
-    num_batch = args.numsample//args.bs
+    num_batch = args.numsample//(args.bs * args.keep_rate)
 else:
     num_batch = 1
 
@@ -127,7 +131,7 @@ starttime = time.time()
 if args.MMD:
     mmdvals = torch.zeros(1+(num_crit//args.eval_freq), num_batch).cuda()#where MMD measurements will be stored
 
-num_samp = min(args.bs, 128)
+num_samp = min(int(args.bs * args.keep_rate), 128)
 print('Using max num_samp = 128')
 
 #repeating seed selection again here to get same noise sequence
@@ -158,6 +162,8 @@ for b_idx in tqdm(range(num_batch)):
         tbatch = next(tgen)[0]#target data only necessary here if computing MMD
         tbatch = tbatch.cuda()
 
+    if args.keep_rate < 1:
+        fake = fdq_rejection(fake, critic_list, steps, args)
     
     if b_idx ==0:
         generate_image('00',fake[0:num_samp,:,:,:].detach().cpu(), 'jpg', temp_dir)#visualize initial images
